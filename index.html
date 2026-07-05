@@ -1,0 +1,2583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SWAG — Fashion Portfolio</title>
+<meta name="description" content="Swag Group — Retail, Trading, Gold & In-house Technology across the Kingdom of Saudi Arabia.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&family=Tajawal:wght@400;500;700&display=swap'>
+<script src='https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/lenis@1.3.13/dist/lenis.min.js'></script>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --jungle-deep:    #FBF9F2;
+  --jungle-primary: #F4F0E5;
+  --jungle-mid:     #EDE8DA;
+  --jungle-secondary: #E5DFCC;
+  --gold:           #A8811F;
+  --gold-light:     #D4AF37;
+  --gold-dark:      #B8860B;
+  --ivory:          #1A1712;
+  --moss:           #877750;
+  --serif: 'Cormorant Garamond', 'Times New Roman', serif;
+  --sans: 'Inter', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --ease-quiet:    cubic-bezier(.22, 1, .36, 1);
+  --ease-precise:  cubic-bezier(.4, 0, .2, 1);
+  --ease-emphasis: cubic-bezier(.16, 1, .3, 1);
+  --ease-settle:   cubic-bezier(.34, 1.56, .64, 1);
+}
+
+html { scroll-behavior: auto; }
+
+body {
+  background: var(--jungle-deep);
+  color: var(--ivory);
+  font-family: var(--sans);
+  font-weight: 300;
+  line-height: 1.6;
+  font-size: 16px;
+  overflow-x: hidden;
+  cursor: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@media (pointer: coarse) { body { cursor: auto; } }
+
+::selection { background: var(--gold); color: var(--jungle-deep); }
+
+img { max-width: 100%; display: block; }
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse at 15% 5%, rgba(168, 129, 31, 0.06), transparent 55%),
+    radial-gradient(ellipse at 85% 95%, rgba(201, 162, 39, 0.05), transparent 55%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(26, 23, 18, 0.012) 2px, rgba(26, 23, 18, 0.012) 3px);
+  pointer-events: none;
+  z-index: 2;
+  mix-blend-mode: overlay;
+}
+
+.cursor-canvas {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Typography utilities */
+.eyebrow {
+  font-family: var(--sans);
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--gold);
+  display: inline-block;
+}
+
+.hairline {
+  display: inline-block;
+  width: 2rem; height: 1px;
+  background: var(--gold);
+  vertical-align: middle;
+  margin: 0 1rem;
+}
+
+.running-head {
+  position: fixed;
+  top: 1.5rem; left: 0; right: 0;
+  display: flex; justify-content: space-between;
+  padding: 0 2rem;
+  font-family: var(--sans);
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--ivory); opacity: 0.4;
+  z-index: 100;
+  pointer-events: none;
+  mix-blend-mode: difference;
+}
+
+/* SECTION DIVIDER */
+.divider {
+  display: flex; align-items: center; justify-content: center;
+  gap: 1.5rem;
+  padding: 5rem 2rem 3rem;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+  position: relative;
+  z-index: 3;
+}
+
+.divider::before, .divider::after {
+  content: '';
+  display: block;
+  width: 4rem; height: 1px;
+  background: var(--gold);
+  opacity: 0.4;
+}
+
+.divider__roman {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  font-style: normal;
+  color: var(--ivory);
+  letter-spacing: 0.15em;
+  padding: 0 0.5rem;
+}
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: space-between;
+  padding: 5rem 2rem 2rem;
+  position: relative;
+  z-index: 3;
+}
+
+.hero__meta-top, .hero__meta-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ivory); opacity: 0.6;
+}
+
+.hero__meta-top span:last-child { color: var(--gold); opacity: 1; }
+
+.hero__title {
+  flex: 1;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  position: relative;
+  padding: 4rem 0;
+}
+
+.hero__name {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: clamp(4rem, 17vw, 16rem);
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  color: var(--ivory);
+  display: flex;
+  text-align: center;
+  perspective: 800px;
+}
+
+.hero__name span {
+  display: inline-block;
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+
+.hero__name--line2 {
+  color: var(--gold);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.hero__byline {
+  display: flex; align-items: center; justify-content: center;
+  gap: 1.5rem;
+  margin-top: 3rem;
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ivory); opacity: 0.75;
+  flex-wrap: wrap;
+}
+
+.hero__rule {
+  display: inline-block;
+  width: 3rem; height: 1px;
+  background: var(--gold);
+}
+
+.hero__scroll-cue {
+  color: var(--gold);
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  animation: nudge 2.4s var(--ease-quiet) infinite;
+}
+
+@keyframes nudge {
+  0%, 100% { transform: translateY(0); opacity: 0.7; }
+  50% { transform: translateY(4px); opacity: 1; }
+}
+
+/* MANIFESTO */
+.manifesto {
+  padding: 8rem 2rem 6rem;
+  max-width: 860px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 3;
+}
+
+.manifesto__header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.manifesto__header .eyebrow { margin-bottom: 1.5rem; }
+
+.manifesto__title {
+  font-family: var(--serif);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.05;
+  color: var(--ivory);
+}
+
+.manifesto__title em { color: var(--gold); font-style: normal; }
+
+.manifesto__body {
+  font-family: var(--serif);
+  font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+  line-height: 1.65;
+  color: var(--ivory);
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+.manifesto__body p { margin-bottom: 1.5rem; }
+
+.manifesto__body p:first-of-type::first-letter {
+  font-family: var(--serif);
+  font-size: 5.5em;
+  line-height: 0.82;
+  float: left;
+  padding: 0.05em 0.12em 0 0;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.manifesto__body em {
+  color: var(--gold-light);
+  font-style: italic;
+}
+
+.manifesto__sig {
+  margin-top: 4rem;
+  text-align: right;
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--gold);
+  font-size: 1.3rem;
+  line-height: 1.4;
+}
+
+.manifesto__sig::before {
+  content: '';
+  display: inline-block;
+  width: 3rem; height: 1px;
+  background: var(--gold);
+  vertical-align: middle;
+  margin-right: 1rem;
+  opacity: 0.5;
+}
+
+/* INDEX */
+.index {
+  padding: 6rem 2rem 8rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 3;
+}
+
+.index__header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.index__title {
+  font-family: var(--serif);
+  font-size: clamp(3rem, 7vw, 5rem);
+  font-weight: 400;
+  line-height: 1;
+  margin: 1rem 0 0;
+  color: var(--ivory);
+  font-style: italic;
+}
+
+.index__list {
+  list-style: none;
+  border-top: 1px solid rgba(26, 23, 18, 0.18);
+}
+
+.index__entry {
+  display: grid;
+  grid-template-columns: 70px 1fr 220px 80px;
+  align-items: baseline;
+  padding: 1.75rem 0;
+  border-bottom: 1px solid rgba(26, 23, 18, 0.18);
+  transition: padding 0.5s var(--ease-quiet), background 0.5s var(--ease-quiet);
+  cursor: none;
+}
+
+.index__entry:hover {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  background: linear-gradient(90deg, transparent, rgba(201, 162, 39, 0.06), transparent);
+}
+
+.index__entry:hover .index__name { color: var(--gold); }
+
+.index__num {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--gold);
+}
+
+.index__name {
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-weight: 400;
+  color: var(--ivory);
+  transition: color 0.4s var(--ease-quiet);
+}
+
+.index__cat {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ivory);
+  opacity: 0.55;
+}
+
+.index__page {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ivory);
+  opacity: 0.55;
+  text-align: right;
+}
+
+@media (max-width: 700px) {
+  .index__entry { grid-template-columns: 50px 1fr 60px; }
+  .index__cat { display: none; }
+}
+
+/* SPREAD */
+.spread {
+  min-height: 100vh;
+  padding: 4rem 2rem 8rem;
+  position: relative;
+  z-index: 3;
+  opacity: 0;
+  transform: translateX(80px);
+  transition: opacity 1.4s var(--ease-quiet), transform 1.4s var(--ease-quiet);
+  will-change: transform, opacity;
+}
+
+.spread.is-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.spread.is-past {
+  opacity: 0.45;
+  transform: translateX(-60px);
+}
+
+.spread__inner {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.spread__head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(26, 23, 18, 0.15);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ivory); opacity: 0.55;
+  margin-bottom: 3rem;
+}
+
+.spread__head span:nth-child(2) { color: var(--gold); opacity: 0.9; }
+
+.spread__chapter-wrap {
+  display: flex; align-items: flex-end; gap: 1.5rem;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.spread__chapter {
+  font-family: var(--serif);
+  font-size: clamp(7rem, 18vw, 14rem);
+  font-weight: 400;
+  line-height: 0.82;
+  color: var(--gold);
+  letter-spacing: -0.04em;
+}
+
+.spread__chapter-label {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ivory);
+  opacity: 0.65;
+  padding-bottom: 1.2rem;
+  border-left: 1px solid var(--gold);
+  padding-left: 1rem;
+}
+
+.spread__chapter-label small {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  opacity: 0.6;
+  margin-top: 0.4rem;
+}
+
+.spread__title {
+  font-family: var(--serif);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 400;
+  line-height: 1.02;
+  color: var(--ivory);
+  margin-bottom: 1.5rem;
+  max-width: 1000px;
+  letter-spacing: -0.015em;
+}
+
+.spread__sub {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(1.1rem, 1.7vw, 1.5rem);
+  color: var(--gold);
+  margin-bottom: 3rem;
+  max-width: 760px;
+  line-height: 1.4;
+}
+
+.spread__meta {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  margin-bottom: 4rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid rgba(26, 23, 18, 0.15);
+  border-bottom: 1px solid rgba(26, 23, 18, 0.15);
+}
+
+.spread__meta-item .label {
+  display: block;
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ivory); opacity: 0.5;
+  margin-bottom: 0.5rem;
+}
+
+.spread__meta-item .value {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  color: var(--ivory);
+}
+
+@media (max-width: 700px) {
+  .spread__meta { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+}
+
+.spread__body {
+  font-family: var(--serif);
+  font-size: clamp(1.05rem, 1.3vw, 1.25rem);
+  line-height: 1.7;
+  color: var(--ivory);
+  max-width: 660px;
+  margin-bottom: 3rem;
+}
+
+.spread__body p { margin-bottom: 1.2rem; }
+
+.spread__body em {
+  color: var(--gold-light);
+  font-style: italic;
+}
+
+.spread__pullquote {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(1.5rem, 2.8vw, 2.3rem);
+  line-height: 1.25;
+  color: var(--gold);
+  margin: 3rem 0;
+  padding-left: 2rem;
+  border-left: 1px solid var(--gold);
+  max-width: 760px;
+}
+
+.spread__pullquote::before { content: '"'; }
+.spread__pullquote::after { content: '"'; }
+
+.spread__caption {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ivory); opacity: 0.55;
+  margin-top: 0.75rem;
+  display: flex; justify-content: space-between;
+}
+
+/* ====== SPREAD 01 — KUNSTHAUS NORD ====== */
+.spread--kunsthaus .spread__layout {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 4rem;
+  align-items: stretch;
+}
+
+@media (max-width: 950px) {
+  .spread--kunsthaus .spread__layout { grid-template-columns: 1fr; }
+}
+
+.spread--kunsthaus .spread__col-text {
+  display: flex; flex-direction: column;
+}
+
+.spread--kunsthaus .logo-display {
+  border: 1px solid rgba(201, 162, 39, 0.2);
+  background: var(--jungle-mid);
+  padding: 3rem 2rem;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  min-height: 480px;
+  position: relative;
+}
+
+.logo-display__corner {
+  position: absolute;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--gold); opacity: 0.6;
+}
+.logo-display__corner--tl { top: 1rem; left: 1rem; }
+.logo-display__corner--tr { top: 1rem; right: 1rem; }
+.logo-display__corner--bl { bottom: 1rem; left: 1rem; }
+.logo-display__corner--br { bottom: 1rem; right: 1rem; }
+
+.logo-display__svg {
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+}
+
+.logo-grid {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(201, 162, 39, 0.2);
+}
+
+.logo-grid__item {
+  aspect-ratio: 1;
+  border: 1px solid rgba(26, 23, 18, 0.1);
+  display: flex; align-items: center; justify-content: center;
+  padding: 0.5rem;
+}
+
+.logo-grid__item svg { width: 100%; height: 100%; }
+
+.logo-paths path,
+.logo-paths line,
+.logo-paths polygon,
+.logo-paths circle,
+.logo-paths rect {
+  stroke-dasharray: 800;
+  stroke-dashoffset: 800;
+  transition: stroke-dashoffset 2.2s var(--ease-emphasis);
+}
+
+.spread.is-in .logo-paths > * {
+  stroke-dashoffset: 0;
+}
+
+/* ====== SPREAD 02 — HEX & OAK ====== */
+.spread--hex .spread__layout {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 0;
+  align-items: stretch;
+}
+
+@media (max-width: 950px) {
+  .spread--hex .spread__layout { grid-template-columns: 1fr; }
+}
+
+.spread--hex .spread__image-block {
+  position: relative;
+  background: var(--jungle-primary);
+  overflow: hidden;
+  min-height: 600px;
+  border-right: 1px solid rgba(201, 162, 39, 0.2);
+}
+
+.spread--hex .spread__image-block img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: brightness(0.8) contrast(1.1) saturate(0.85);
+}
+
+.spread--hex .spread__image-meta {
+  position: absolute;
+  bottom: 1.5rem; left: 1.5rem; right: 1.5rem;
+  display: flex; justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ivory);
+}
+
+.spread--hex .spread__image-meta span {
+  background: rgba(251, 249, 242, 0.7);
+  padding: 0.4rem 0.7rem;
+  backdrop-filter: blur(4px);
+}
+
+.spread--hex .spread__col-text {
+  padding: 3rem 3rem 3rem 3rem;
+  background: var(--jungle-mid);
+}
+
+.bottle-spec {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(201, 162, 39, 0.25);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.bottle-spec__item .label {
+  display: block;
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  margin-bottom: 0.4rem;
+}
+.bottle-spec__item .value {
+  font-family: var(--serif);
+  font-size: 1rem;
+  color: var(--gold);
+}
+
+/* ====== SPREAD 03 — FREQUENZ ====== */
+.spread--frequenz .poster-wall {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+@media (max-width: 950px) {
+  .spread--frequenz .poster-wall { grid-template-columns: repeat(2, 1fr); }
+}
+
+.poster-card {
+  aspect-ratio: 2 / 3;
+  background: var(--jungle-primary);
+  border: 1px solid rgba(26, 23, 18, 0.08);
+  padding: 1.5rem 1rem;
+  display: flex; flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.6s var(--ease-quiet);
+}
+
+.poster-card:hover { transform: translateY(-4px); }
+
+.poster-card__num {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+}
+
+.poster-card__type {
+  font-family: var(--sans);
+  font-weight: 500;
+  color: var(--ivory);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.poster-card__footer {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--ivory);
+  opacity: 0.5;
+  display: flex; justify-content: space-between;
+}
+
+/* ====== SPREAD 04 — RAUHBART TYPEFACE ====== */
+.spread--rauhbart .specimen-stage {
+  background: var(--jungle-mid);
+  border: 1px solid rgba(201, 162, 39, 0.2);
+  padding: 4rem 3rem;
+  margin: 2rem 0 4rem;
+  text-align: center;
+  position: relative;
+}
+
+.specimen-stage__corner {
+  position: absolute;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--gold); opacity: 0.6;
+}
+.specimen-stage__corner--tl { top: 1rem; left: 1rem; }
+.specimen-stage__corner--br { bottom: 1rem; right: 1rem; }
+
+.specimen-stage__glyph {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: clamp(10rem, 30vw, 28rem);
+  line-height: 0.85;
+  color: var(--ivory);
+  letter-spacing: -0.06em;
+}
+
+.specimen-stage__glyph em {
+  color: var(--gold);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.specimen-stage__caption {
+  margin-top: 2rem;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--gold);
+}
+
+.type-features {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  margin-top: 3rem;
+  padding-top: 3rem;
+  border-top: 1px solid rgba(26, 23, 18, 0.15);
+}
+
+@media (max-width: 700px) {
+  .type-features { grid-template-columns: repeat(2, 1fr); }
+}
+
+.type-features__item .num {
+  font-family: var(--serif);
+  font-size: 3.5rem;
+  font-weight: 400;
+  color: var(--gold);
+  line-height: 1;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.type-features__item .label {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ivory); opacity: 0.7;
+}
+
+/* ====== SPREAD 05 — DAS BUCH ====== */
+.spread--buch .spread__layout {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+@media (max-width: 950px) {
+  .spread--buch .spread__layout { grid-template-columns: 1fr; }
+}
+
+.book-mockup {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  background: var(--jungle-mid);
+  border: 1px solid rgba(201, 162, 39, 0.25);
+  padding: 2.5rem 2rem 2rem;
+  display: flex; flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.book-mockup::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 1rem;
+  background: linear-gradient(90deg, rgba(0,0,0,0.5), transparent);
+  pointer-events: none;
+}
+
+.book-mockup__title {
+  font-family: var(--serif);
+  font-size: 2.4rem;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--ivory);
+  letter-spacing: -0.02em;
+}
+
+.book-mockup__title em { color: var(--gold); font-style: italic; }
+
+.book-mockup__sub {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--gold);
+  margin-top: 1rem;
+}
+
+.book-mockup__spread {
+  flex: 1;
+  margin: 2rem 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  font-family: var(--serif);
+  font-size: 0.55rem;
+  line-height: 1.4;
+  color: var(--ivory);
+  opacity: 0.7;
+}
+
+.book-mockup__col {
+  column-count: 2;
+  column-gap: 0.5rem;
+  column-fill: auto;
+  height: 100%;
+}
+
+.book-mockup__footer {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--ivory); opacity: 0.5;
+  display: flex; justify-content: space-between;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(26, 23, 18, 0.1);
+}
+
+/* SECTION HEADER (for non-spread sections) */
+.section-head {
+  padding: 8rem 2rem 4rem;
+  text-align: center;
+  position: relative;
+  z-index: 3;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-head__num {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-style: italic;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+
+.section-head__title {
+  font-family: var(--serif);
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 400;
+  line-height: 1;
+  color: var(--ivory);
+  letter-spacing: -0.02em;
+}
+
+.section-head__title em {
+  color: var(--gold);
+  font-style: italic;
+}
+
+.section-head__sub {
+  margin-top: 1.5rem;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--ivory); opacity: 0.7;
+  max-width: 540px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* TYPE SPECIMENS — DRAGGABLE DESK */
+.specimens {
+  position: relative;
+  z-index: 3;
+  padding: 0 2rem 6rem;
+}
+
+.specimens__desk {
+  position: relative;
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 720px;
+  background:
+    radial-gradient(ellipse at center, rgba(13, 40, 24, 0.6), transparent 70%),
+    var(--jungle-deep);
+  border: 1px solid rgba(201, 162, 39, 0.15);
+  overflow: hidden;
+  touch-action: none;
+}
+
+.specimens__desk::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(201, 162, 39, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201, 162, 39, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+.specimens__hint {
+  position: absolute;
+  bottom: 1.5rem; left: 1.5rem;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ivory); opacity: 0.45;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.specimens__hint span { color: var(--gold); }
+
+.specimen {
+  position: absolute;
+  width: 280px;
+  background: var(--ivory);
+  color: var(--jungle-deep);
+  cursor: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  box-shadow:
+    0 1px 0 rgba(0,0,0,0.3),
+    0 30px 60px -20px rgba(0,0,0,0.6),
+    0 12px 24px -8px rgba(0,0,0,0.4);
+  transition: box-shadow 0.4s var(--ease-quiet);
+  transform-origin: center center;
+  will-change: transform;
+}
+
+@media (pointer: coarse) { .specimen { cursor: grab; } }
+.specimen.is-dragging { cursor: none; box-shadow: 0 40px 80px -10px rgba(0,0,0,0.7), 0 16px 32px -4px rgba(0,0,0,0.5); }
+@media (pointer: coarse) { .specimen.is-dragging { cursor: grabbing; } }
+
+.specimen__paper {
+  padding: 1.5rem 1.5rem 1.25rem;
+  position: relative;
+}
+
+.specimen__paper::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background-image: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(251, 249, 242, 0.02) 3px, rgba(251, 249, 242, 0.02) 4px);
+  pointer-events: none;
+}
+
+.specimen__head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--jungle-deep); opacity: 0.65;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(251, 249, 242, 0.2);
+  margin-bottom: 1rem;
+}
+
+.specimen__head span:last-child { color: var(--gold-dark); opacity: 1; }
+
+.specimen__aa {
+  font-family: var(--serif);
+  font-size: 8rem;
+  font-weight: 700;
+  line-height: 0.85;
+  color: var(--jungle-deep);
+  letter-spacing: -0.05em;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.specimen__aa em {
+  color: var(--gold-dark);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.specimen__alphabet {
+  font-family: var(--serif);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--jungle-deep);
+  text-align: center;
+  letter-spacing: 0.05em;
+  padding: 0.75rem 0;
+  border-top: 1px solid rgba(251, 249, 242, 0.15);
+  border-bottom: 1px solid rgba(251, 249, 242, 0.15);
+  margin-bottom: 0.75rem;
+}
+
+.specimen__footer {
+  display: flex; justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--jungle-deep); opacity: 0.7;
+}
+
+.specimen__download {
+  color: var(--gold-dark);
+  font-weight: 500;
+  cursor: none;
+}
+@media (pointer: coarse) { .specimen__download { cursor: pointer; } }
+
+.specimen__download::after { content: ' ↓'; }
+
+/* COLOR PALETTE — FILM STRIP */
+.palette {
+  position: relative;
+  z-index: 3;
+  min-height: 100vh;
+  display: flex; align-items: center;
+  overflow: hidden;
+  padding: 6rem 0;
+}
+
+.palette__head {
+  position: absolute;
+  top: 4rem; left: 2rem; right: 2rem;
+  display: flex; justify-content: space-between; align-items: end;
+  z-index: 4;
+}
+
+.palette__title {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ivory);
+  line-height: 1;
+}
+
+.palette__title em { color: var(--gold); font-style: normal; }
+
+.palette__count {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-align: right;
+}
+
+.palette__progress {
+  position: absolute;
+  bottom: 3rem; left: 2rem; right: 2rem;
+  height: 1px;
+  background: rgba(26, 23, 18, 0.15);
+  z-index: 4;
+}
+
+.palette__progress-bar {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  background: var(--gold);
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+.palette__progress-label {
+  position: absolute;
+  bottom: 1.5rem; left: 2rem;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ivory); opacity: 0.5;
+}
+
+.palette__progress-label--right {
+  left: auto;
+  right: 2rem;
+}
+
+.filmstrip {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 4rem 0;
+  will-change: transform;
+}
+
+.filmstrip__sprockets {
+  position: absolute;
+  left: 0; right: 0;
+  height: 24px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.filmstrip__sprockets--top { top: 4rem; }
+.filmstrip__sprockets--bottom { bottom: 4rem; }
+
+.filmstrip__sprockets::before, .filmstrip__sprockets::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(201, 162, 39, 0.2);
+}
+
+.sprocket {
+  width: 14px; height: 14px;
+  background: var(--jungle-deep);
+  border: 1px solid rgba(201, 162, 39, 0.3);
+  margin: 0 0.5rem;
+}
+
+.filmframe {
+  flex-shrink: 0;
+  width: 320px;
+  height: 440px;
+  margin: 0 0.5rem;
+  background: var(--jungle-primary);
+  border: 1px solid rgba(201, 162, 39, 0.2);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1.5rem;
+}
+
+.filmframe__swatch {
+  width: 100%;
+  height: 200px;
+  background: var(--swatch);
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(26, 23, 18, 0.1);
+}
+
+.filmframe__num {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+}
+
+.filmframe__name {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ivory);
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+
+.filmframe__hex {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--ivory); opacity: 0.7;
+  margin-bottom: 1rem;
+}
+
+.filmframe__pant {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ivory); opacity: 0.5;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(26, 23, 18, 0.1);
+  display: flex;
+  justify-content: space-between;
+}
+
+/* LECTURES */
+.lectures {
+  padding: 8rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 3;
+}
+
+.lectures__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+@media (max-width: 950px) {
+  .lectures__grid { grid-template-columns: 1fr; }
+}
+
+.talk {
+  display: flex;
+  flex-direction: column;
+}
+
+.talk__video {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  background: var(--jungle-primary);
+  overflow: hidden;
+  cursor: none;
+  border: 1px solid rgba(201, 162, 39, 0.15);
+}
+
+@media (pointer: coarse) { .talk__video { cursor: pointer; } }
+
+.talk__poster {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: brightness(0.55) contrast(1.1) saturate(0.7);
+  transition: filter 0.6s var(--ease-quiet), transform 0.8s var(--ease-quiet);
+}
+
+.talk__video:hover .talk__poster {
+  filter: brightness(0.7) contrast(1.05);
+  transform: scale(1.03);
+}
+
+.talk__play {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70px; height: 70px;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  background: rgba(251, 249, 242, 0.5);
+  backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  cursor: none;
+  transition: transform 0.4s var(--ease-quiet), background 0.4s var(--ease-quiet);
+}
+
+@media (pointer: coarse) { .talk__play { cursor: pointer; } }
+
+.talk__video:hover .talk__play {
+  transform: translate(-50%, -50%) scale(1.08);
+  background: var(--gold);
+}
+
+.talk__play::after {
+  content: '';
+  display: block;
+  width: 0; height: 0;
+  border-left: 12px solid var(--gold);
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  margin-left: 4px;
+  transition: border-left-color 0.4s var(--ease-quiet);
+}
+
+.talk__video:hover .talk__play::after {
+  border-left-color: var(--jungle-deep);
+}
+
+.talk__corner {
+  position: absolute;
+  top: 1rem; left: 1rem;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(251, 249, 242, 0.6);
+  padding: 0.4rem 0.7rem;
+  backdrop-filter: blur(4px);
+}
+
+.talk__duration {
+  position: absolute;
+  bottom: 1rem; right: 1rem;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--ivory);
+  background: rgba(251, 249, 242, 0.6);
+  padding: 0.4rem 0.7rem;
+  backdrop-filter: blur(4px);
+}
+
+.talk__meta {
+  margin-top: 1.5rem;
+  display: flex; justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ivory); opacity: 0.6;
+}
+
+.talk__title {
+  font-family: var(--serif);
+  font-size: 1.8rem;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.15;
+  color: var(--ivory);
+  margin-top: 0.75rem;
+}
+
+.talk__title em { color: var(--gold); font-style: normal; }
+
+.talk__blurb {
+  font-family: var(--serif);
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--ivory); opacity: 0.75;
+  margin-top: 0.75rem;
+}
+
+/* CONTACT / COLOPHON */
+.contact {
+  padding: 10rem 2rem 6rem;
+  position: relative;
+  z-index: 3;
+  text-align: center;
+}
+
+.contact__pre {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+
+.contact__name {
+  font-family: var(--serif);
+  font-size: clamp(3rem, 9vw, 8rem);
+  font-weight: 700;
+  line-height: 0.9;
+  color: var(--ivory);
+  letter-spacing: -0.03em;
+  margin-bottom: 2rem;
+}
+
+.contact__name em {
+  color: var(--gold);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.contact__email {
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-style: italic;
+  color: var(--gold);
+  display: inline-block;
+  padding: 1rem 0;
+  border-top: 1px solid var(--gold);
+  border-bottom: 1px solid var(--gold);
+  margin-bottom: 3rem;
+  text-decoration: none;
+  transition: opacity 0.3s var(--ease-quiet);
+}
+
+.contact__email:hover { opacity: 0.7; }
+
+.contact__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3rem;
+  max-width: 900px;
+  margin: 0 auto 5rem;
+}
+
+@media (max-width: 700px) {
+  .contact__grid { grid-template-columns: 1fr; gap: 2rem; }
+}
+
+.contact__col .label {
+  display: block;
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+}
+
+.contact__col .value {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: var(--ivory);
+}
+
+.colophon {
+  max-width: 700px;
+  margin: 4rem auto 0;
+  padding: 3rem 2rem 0;
+  border-top: 1px solid rgba(26, 23, 18, 0.15);
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--ivory); opacity: 0.65;
+  text-align: center;
+}
+
+.colophon em { color: var(--gold); font-style: normal; }
+
+.colophon__sig {
+  margin-top: 2rem;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-style: normal;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.8;
+}
+
+/* REVEAL */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 1.1s var(--ease-quiet), transform 1.1s var(--ease-quiet);
+}
+
+.reveal.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal--delay-1 { transition-delay: 0.15s; }
+.reveal--delay-2 { transition-delay: 0.3s; }
+.reveal--delay-3 { transition-delay: 0.45s; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .spread, .reveal { opacity: 1; transform: none; }
+  .cursor-canvas { display: none; }
+}
+
+@media (max-width: 700px) {
+  .hero { padding: 4rem 1.5rem 2rem; }
+  .manifesto, .index, .spread__inner, .lectures, .contact { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .specimens { padding: 0 1rem 4rem; }
+  .specimens__desk { height: 900px; }
+  .running-head { padding: 0 1rem; font-size: 9px; }
+  .spread { padding: 3rem 1rem 5rem; }
+  .spread__head { font-size: 9px; }
+  .spread--hex .spread__col-text { padding: 2rem 1.5rem; }
+  .palette__head { left: 1rem; right: 1rem; }
+  .palette__progress { left: 1rem; right: 1rem; }
+  .palette__progress-label { left: 1rem; }
+  .palette__progress-label--right { right: 1rem; }
+  .filmframe { width: 260px; height: 360px; }
+}
+
+/* ===== SWAG additions (Arabic + gold bar), original engine untouched ===== */
+.ar { font-family: 'Tajawal', var(--sans); direction: rtl; unicode-bidi: isolate; }
+.spread__chapter-label small .ar { font-size: 0.95em; opacity: 0.9; }
+
+/* Gold bar visual, reuses .spread--hex .spread__image-block frame */
+.goldbar-stage {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(201,162,39,0.18), transparent 60%),
+    linear-gradient(160deg, #EDE8DA 0%, #FBF9F2 100%);
+}
+.goldbar-stage svg { width: 66%; max-width: 380px; filter: drop-shadow(0 30px 40px rgba(0,0,0,0.5)); }
+
+/* ================= NAVBAR ================= */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 400;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; padding: 0.85rem 1.6rem;
+  background: rgba(251,249,242,0.45);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(201,162,39,0.15);
+  font-family: var(--sans);
+  transition: background .4s var(--ease-quiet), padding .4s var(--ease-quiet);
+}
+.nav.scrolled { background: rgba(251,249,242,0.92); padding: 0.65rem 1.6rem; }
+.nav__group { display: flex; align-items: center; gap: 0.7rem; flex: 1; }
+.nav__group--right { justify-content: flex-end; }
+.nav__group--center { flex: 2; justify-content: center; }
+.nav__logo {
+  font-family: var(--serif); font-size: 1.35rem; font-weight: 700;
+  letter-spacing: 0.22em; color: var(--gold); text-decoration: none; white-space: nowrap;
+}
+.nav__links { display: flex; gap: 1.7rem; list-style: none; }
+.nav__links a {
+  color: var(--ivory); text-decoration: none;
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  opacity: 0.75; transition: opacity .3s, color .3s; white-space: nowrap;
+}
+.nav__links a:hover { opacity: 1; color: var(--gold); }
+.nav__cta {
+  background: var(--gold); color: var(--jungle-deep); border: none;
+  padding: 0.55rem 1.05rem; font-size: 10.5px; font-weight: 600;
+  letter-spacing: 0.15em; text-transform: uppercase; cursor: none;
+  font-family: var(--sans); white-space: nowrap;
+}
+.nav__lang {
+  background: transparent; border: 1px solid rgba(201,162,39,0.45);
+  color: var(--gold); padding: 0.5rem 0.75rem; font-size: 11px;
+  letter-spacing: 0.05em; cursor: none; font-family: var(--mono); white-space: nowrap;
+}
+.nav__lang:hover { background: rgba(201,162,39,0.12); }
+.nav__burger { display: none; background: none; border: none; cursor: none;
+  flex-direction: column; gap: 4px; padding: 4px; }
+.nav__burger span { width: 22px; height: 2px; background: var(--gold); display: block; transition: .3s; }
+@media (pointer: coarse) { .nav__cta, .nav__lang, .nav__burger, .nav__links a { cursor: pointer; } }
+
+@media (max-width: 880px) {
+  .nav__group--center { position: static; }
+  .nav__links {
+    position: fixed; top: 56px; left: 0; right: 0;
+    flex-direction: column; gap: 0;
+    background: rgba(251,249,242,0.98); backdrop-filter: blur(16px);
+    padding: 0.5rem 1.6rem 1.2rem;
+    border-bottom: 1px solid rgba(201,162,39,0.2);
+    transform: translateY(-130%); transition: transform .45s var(--ease-quiet);
+  }
+  .nav__links.open { transform: translateY(0); }
+  .nav__links a { padding: 1rem 0; border-bottom: 1px solid rgba(26,23,18,0.06); font-size: 13px; }
+  .nav__burger { display: flex; }
+  .nav__cta { display: none; }
+  .nav__logo { font-size: 1.2rem; }
+}
+
+/* ================= STATS STRIP ================= */
+.stats { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem 0;
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem; }
+@media (max-width: 700px) { .stats { grid-template-columns: repeat(2,1fr); } }
+.stat { border-top: 1px solid rgba(201,162,39,0.25); padding-top: 1rem; }
+.stat__num { font-family: var(--serif); font-weight: 700; font-size: clamp(2.2rem,5vw,3.4rem);
+  color: var(--gold); line-height: 1; }
+.stat__label { font-family: var(--sans); font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase; opacity: 0.6; margin-top: 0.55rem; }
+
+/* ================= CITY CARDS ================= */
+.cities { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-top: 2.5rem; }
+@media (max-width: 700px) { .cities { grid-template-columns: 1fr; } }
+.city { border: 1px solid rgba(201,162,39,0.2); padding: 1.6rem; background: var(--jungle-mid);
+  transition: border-color .4s, transform .4s var(--ease-quiet); }
+.city:hover { border-color: rgba(201,162,39,0.5); transform: translateY(-4px); }
+.city__name { font-family: var(--serif); font-size: 1.7rem; color: var(--ivory); }
+.city__meta { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--gold); opacity: 0.85; margin-top: 0.5rem; }
+
+/* ================= COMPACT CONTACT + FOOTER ================= */
+.contact2 { max-width: 900px; margin: 0 auto; padding: 6rem 2rem 4rem; text-align: center; }
+.contact2__pre { font-family: var(--serif); font-style: italic; color: var(--gold);
+  font-size: 1.05rem; margin-bottom: 1rem; }
+.contact2 h2 { font-family: var(--serif); font-weight: 600;
+  font-size: clamp(2.6rem,9vw,5rem); color: var(--ivory); line-height: 1; }
+.contact2 .mail { display: inline-block; margin-top: 1.6rem; font-family: var(--serif);
+  font-style: italic; font-size: 1.4rem; color: var(--gold); text-decoration: none;
+  border-bottom: 1px solid var(--gold); padding-bottom: 2px; }
+.contact2__row { margin-top: 2.4rem; display: flex; gap: 2.2rem; justify-content: center;
+  flex-wrap: wrap; font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--ivory); opacity: 0.7; }
+.footer { border-top: 1px solid rgba(201,162,39,0.15); padding: 2rem;
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--ivory); opacity: 0.5; }
+
+/* ================= ARABIC / RTL ================= */
+html[dir="rtl"] body { font-family: 'Tajawal', var(--sans); }
+html[dir="rtl"] .serif, html[dir="rtl"] h1, html[dir="rtl"] h2, html[dir="rtl"] h3 { font-family: 'Tajawal', var(--serif); }
+html[dir="rtl"] .manifesto__body, html[dir="rtl"] .spread__body,
+html[dir="rtl"] .spread__sub, html[dir="rtl"] .section-head__sub { text-align: right; }
+html[dir="rtl"] .nav__links { direction: rtl; }
+html[dir="rtl"] .stat__num, html[dir="rtl"] .filmframe__hex { direction: ltr; }
+
+/* ================= LIGHT THEME OVERRIDES ================= */
+:root{ --ink:#1A1712; --brown:#4A3526; --gold-accent:#C9A227; }
+
+/* brown top strip like the SWAG site */
+.topstrip{ position:fixed; top:0; left:0; right:0; height:5px; background:#3D2B1C; z-index:500; }
+.nav{ top:5px; }
+
+/* navbar CTA = dark button (matches screenshot) */
+.nav__cta{ background:#1A1712; color:#FBF9F2; }
+.nav__cta:hover{ background:#3D2B1C; }
+.nav__lang{ border-color:rgba(74,53,38,0.4); color:#4A3526; }
+.nav__lang:hover{ background:rgba(168,129,31,0.12); }
+.nav{ border-bottom-color:rgba(74,53,38,0.15); }
+.nav__logo{ color:#3D2B1C; }
+.nav__links a{ color:#3D2B1C; }
+.nav__links a:hover{ color:#A8811F; }
+.nav__burger span{ background:#3D2B1C; }
+
+/* selection readable on light */
+::selection{ background:#C9A227; color:#1A1712; }
+
+/* keep bright gold marks vivid on cream (hoodie / mark SVG already #C9A227 in body) */
+.goldbar-stage{ background:radial-gradient(ellipse at 50% 30%, rgba(201,162,39,0.14), transparent 60%), linear-gradient(160deg,#F4F0E5 0%, #EDE8DA 100%); }
+
+/* soften the fixed body radial tints for light bg */
+body::before{ background:
+  radial-gradient(ellipse at 15% 5%, rgba(168,129,31,0.05), transparent 55%),
+  radial-gradient(ellipse at 85% 95%, rgba(74,53,38,0.04), transparent 55%) !important; }
+
+/* ================= SOCIAL ICONS ================= */
+.social{ display:flex; gap:1rem; justify-content:center; margin-top:2.2rem; flex-wrap:wrap; }
+.social__link{ width:52px; height:52px; display:flex; align-items:center; justify-content:center;
+  border:1px solid rgba(74,53,38,0.25); border-radius:50%; color:#3D2B1C; text-decoration:none;
+  transition:all .35s var(--ease-quiet); cursor:none; }
+.social__link:hover{ background:#1A1712; color:#FBF9F2; border-color:#1A1712; transform:translateY(-4px); }
+.social__link svg{ width:22px; height:22px; }
+@media (pointer:coarse){ .social__link{ cursor:pointer; } }
+
+/* ================= KSA MAP ================= */
+.mapwrap{ margin-top:2.5rem; border:1px solid rgba(74,53,38,0.18); background:#F4F0E5; padding:1.5rem;
+  position:relative; }
+.mapwrap svg{ width:100%; height:auto; max-height:360px; display:block; }
+.map-pin circle.dot{ fill:#C9A227; }
+.map-pin .ring{ fill:none; stroke:#C9A227; stroke-width:2; opacity:0.5; transform-origin:center;
+  animation:pinpulse 2.4s var(--ease-quiet) infinite; }
+.map-pin text{ font-family:var(--mono); font-size:9px; letter-spacing:0.12em; fill:#3D2B1C; text-transform:uppercase; }
+@keyframes pinpulse{ 0%{ r:6; opacity:0.6 } 100%{ r:20; opacity:0 } }
+.mapwrap__cap{ position:absolute; bottom:1rem; right:1.2rem; font-family:var(--mono); font-size:9px;
+  letter-spacing:0.15em; text-transform:uppercase; color:#3D2B1C; opacity:0.55; }
+
+/* location pin on city cards */
+.city__name .pin{ width:14px; height:14px; margin-inline-end:6px; vertical-align:baseline; fill:#C9A227; }
+
+.filmframe__swatch{ border:1px solid rgba(74,53,38,0.15); }
+</style>
+
+<body>
+
+<div class="topstrip"></div>
+
+<canvas class="cursor-canvas" id="cursor-canvas"></canvas>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="nav" id="nav">
+  <div class="nav__group nav__group--left">
+    <button class="nav__burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <button class="nav__cta" data-scroll data-target="#contact" data-ar="تواصل معنا">Contact Us</button>
+    <button class="nav__lang" id="langToggle">عربي</button>
+  </div>
+
+  <div class="nav__group nav__group--center">
+    <ul class="nav__links" id="navlinks">
+      <li><a href="#contact" data-scroll data-target="#contact" data-ar="تواصل">Contact</a></li>
+      <li><a href="#branches" data-scroll data-target="#branches" data-ar="فروعنا">Branches</a></li>
+      <li><a href="#quality" data-scroll data-target="#quality" data-ar="الجودة">Quality</a></li>
+      <li><a href="#products" data-scroll data-target="#products" data-ar="المنتجات">Products</a></li>
+      <li><a href="#about" data-scroll data-target="#about" data-ar="من نحن">About Us</a></li>
+    </ul>
+  </div>
+
+  <div class="nav__group nav__group--right">
+    <a href="#hero" class="nav__logo" data-scroll data-target="#hero">SWAG</a>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="hero">
+  <div class="hero__meta-top">
+    <span data-ar="ملف البراند">BRAND PORTFOLIO</span>
+    <span data-ar="أزياء شبابية · السعودية">YOUTH FASHION · KSA</span>
+    <span data-ar="تأسست ٢٠١٢">EST. 2012</span>
+  </div>
+
+  <div class="hero__title">
+    <div class="hero__name hero__name--line1" data-word="SWAG">
+      <span>S</span><span>W</span><span>A</span><span>G</span>
+    </div>
+    <div class="hero__name hero__name--line2" data-word="FASHION">
+      <span>F</span><span>A</span><span>S</span><span>H</span><span>I</span><span>O</span><span>N</span>
+    </div>
+    <div class="hero__byline">
+      <span class="hero__rule"></span>
+      <span data-ar="ستريت وير · فاخر · بسيط">Streetwear · Premium · Minimal</span>
+      <span class="hero__rule"></span>
+    </div>
+  </div>
+
+  <div class="hero__meta-bottom">
+    <span data-ar="أكثر من ٥٠ مليون قطعة منذ ٢٠١٢">50M+ PIECES SINCE 2012</span>
+    <span class="hero__scroll-cue" data-ar="↓ ابدأ التصفح">↓ BEGIN READING</span>
+    <span data-ar="جدة · الرياض · الدمام">JEDDAH · RIYADH · DAMMAM</span>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section class="manifesto reveal" id="about">
+  <div class="manifesto__header">
+    <span class="eyebrow" data-ar="من نحن">ABOUT SWAG</span>
+    <h2 class="manifesto__title" data-ar="براند يعكس هوية <em>جيل</em>.">A brand that defines <em>a generation</em>.</h2>
+  </div>
+
+  <div class="manifesto__body">
+    <p data-ar="انطلقت سواج من جدة عام ٢٠١٢ بطموح واضح: أزياء شبابية بمعايير عالمية وسعر يليق بالشاب السعودي — ستريت وير عالمي بلمسة محلية.">SWAG began in Jeddah in 2012 with one plain ambition: youth fashion at a world standard, at a price that respects the young Saudi wearing it — global streetwear, read through a local eye.</p>
+
+    <p data-ar="وبعد أكثر من خمسين مليون قطعة، أصبحت سواج من أكبر موردي الأزياء الشبابية العصرية في المملكة، بحضور راسخ في جدة والرياض والدمام. فاخرة حيث يجب، وبسيطة بالاختيار.">More than fifty million pieces later, SWAG is one of the Kingdom's largest suppliers of modern youth fashion, with a settled presence in Jeddah, Riyadh and Dammam. Premium where it counts, minimal by choice — streetwear at heart.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat__num">50M+</div><div class="stat__label" data-ar="قطعة مُسلَّمة">Pieces Delivered</div></div>
+    <div class="stat"><div class="stat__num">2012</div><div class="stat__label" data-ar="تأسست في جدة">Founded in Jeddah</div></div>
+    <div class="stat"><div class="stat__num">14+</div><div class="stat__label" data-ar="عاماً من الثقة">Years of Trust</div></div>
+    <div class="stat"><div class="stat__num">3</div><div class="stat__label" data-ar="مدن رئيسية">Major Cities</div></div>
+  </div>
+</section>
+
+<!-- ================= QUALITY ================= -->
+<section class="spread spread--hex" data-spread="02" id="quality">
+  <div class="spread__inner">
+    <div class="spread__head">
+      <span>SWAG / PORTFOLIO</span>
+      <span data-ar="الجودة">QUALITY</span>
+    </div>
+
+    <div class="spread__chapter-wrap">
+      <div class="spread__chapter">01</div>
+      <div class="spread__chapter-label" data-ar="الحرفة">
+        The Craft
+        <small data-ar="خامات تدوم · خياطة دقيقة">Fabric &amp; Fit</small>
+      </div>
+    </div>
+
+    <h3 class="spread__title" data-ar="خامة تدوم، وخياطة تثق بها، ومقاس تعود إليه.">Fabric that lasts, a stitch you can trust, a fit that returns.</h3>
+    <p class="spread__sub" data-ar="الفرق الذي يشعر به العميل ولا يسمّيه هو الحرفة — وزن القطن، كثافة الغرزة، وطريقة جلوس الهودي بعد عاشر غسلة. سواج تصرف اهتمامها هناك بالضبط.">The difference a customer feels but rarely names is craft — the weight of the cotton, the density of the stitch, the way a hoodie sits after its tenth wash. SWAG spends its attention exactly there.</p>
+
+    <div class="spread__meta">
+      <div class="spread__meta-item">
+        <span class="label" data-ar="التركيز">Focus</span>
+        <span class="value" data-ar="الخامة والقَصّة">Fabric &amp; Fit</span>
+      </div>
+      <div class="spread__meta-item">
+        <span class="label" data-ar="الغرزة">Stitch</span>
+        <span class="value" data-ar="دقيقة · متينة">Precise · Durable</span>
+      </div>
+      <div class="spread__meta-item">
+        <span class="label" data-ar="الفحص">Check</span>
+        <span class="value" data-ar="على كل دفعة">QC on every run</span>
+      </div>
+      <div class="spread__meta-item">
+        <span class="label" data-ar="الوعد">Promise</span>
+        <span class="value" data-ar="غسلة بعد غسلة">Wash after wash</span>
+      </div>
+    </div>
+
+    <div class="spread__layout">
+      <div class="spread__image-block">
+        <div class="goldbar-stage">
+          <svg viewBox="0 0 260 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SWAG hoodie">
+            <g fill="none" stroke="#C9A227" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+              <path d="M95 55 L60 75 L30 110 L52 132 L66 118 L66 250 L194 250 L194 118 L208 132 L230 110 L200 75 L165 55" />
+              <path d="M95 55 Q130 92 165 55" />
+              <path d="M95 55 Q130 78 165 55" opacity="0.55"/>
+              <path d="M92 178 L92 214 L168 214 L168 178" />
+              <path d="M92 178 Q130 196 168 178" opacity="0.55"/>
+              <line x1="118" y1="70" x2="118" y2="110"/>
+              <line x1="142" y1="70" x2="142" y2="110"/>
+              <circle cx="118" cy="112" r="2.4" fill="#C9A227" stroke="none"/>
+              <circle cx="142" cy="112" r="2.4" fill="#C9A227" stroke="none"/>
+              <line x1="66" y1="238" x2="194" y2="238" opacity="0.5"/>
+              <rect x="150" y="128" width="26" height="10" opacity="0.7"/>
+            </g>
+            <text x="163" y="136" text-anchor="middle" font-family="monospace" font-size="6" letter-spacing="1.5" fill="#C9A227">SWAG</text>
+          </svg>
+        </div>
+        <div class="spread__image-meta">
+          <span data-ar="هودي · راحة فاخرة">HOODIE · PREMIUM COMFORT</span>
+          <span data-ar="وزن ثقيل · مبطّن">HEAVYWEIGHT · BRUSHED</span>
+        </div>
+      </div>
+
+      <div class="spread__col-text">
+        <div class="spread__body">
+          <p data-ar="يستطيع أي أحد أن يطبع رسمة على قميص سادة. القليل من يجعل القميص نفسه يستحق الطباعة. تبدأ سواج من الخامة — ملمس ووزن مختاران لمناخ السعودية ولطريقة ارتداء الشباب لملابسهم فعلاً: كثيراً، وبقوة، ولسنوات.">Anyone can print a graphic on a blank. Fewer can make the blank worth printing on. SWAG starts at the fabric — a hand and a weight chosen for the Saudi climate and the way young people actually wear their clothes: often, hard, and for years.</p>
+
+          <p data-ar="ثم يأتي الانضباط. حياكة متساوية، نقاط إجهاد مُقوّاة، ياقة وأساور تحافظ على شكلها، وحاشية تنسدل مستقيمة. كل دفعة إنتاج تمرّ ببوابة جودة قبل أن تقترب من الرف.">From there it is discipline. Even seams, reinforced stress points, a collar and cuff that keep their shape, a hem that hangs straight. Every production run passes a quality gate before it is allowed near a shelf.</p>
+
+          <div class="spread__pullquote" data-ar="القطعة تكسب ولاءك في الغسلة العاشرة، لا في أول ارتداء.">A garment earns loyalty on its tenth wash, not its first wear.</div>
+        </div>
+
+        <div class="bottle-spec">
+          <div class="bottle-spec__item">
+            <span class="label" data-ar="الخامة">Fabric</span>
+            <span class="value" data-ar="قطن عالي · وزن ثقيل">Cotton-rich · Heavyweight</span>
+          </div>
+          <div class="bottle-spec__item">
+            <span class="label" data-ar="الغرزة">Stitch</span>
+            <span class="value" data-ar="حياكة مُقوّاة">Reinforced seams</span>
+          </div>
+          <div class="bottle-spec__item">
+            <span class="label" data-ar="المقاس">Fit</span>
+            <span class="value" data-ar="عصري · مطابق للمقاس">Modern · True to size</span>
+          </div>
+          <div class="bottle-spec__item">
+            <span class="label" data-ar="التشطيب">Finish</span>
+            <span class="value" data-ar="مبطّن · مانع للانكماش">Brushed · Pre-shrunk</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRODUCTS ================= -->
+<section class="spread spread--frequenz" data-spread="03" id="products">
+  <div class="spread__inner">
+    <div class="spread__head">
+      <span>SWAG / PORTFOLIO</span>
+      <span data-ar="المنتجات">PRODUCTS</span>
+    </div>
+
+    <div class="spread__chapter-wrap">
+      <div class="spread__chapter">02</div>
+      <div class="spread__chapter-label" data-ar="التشكيلة">
+        The Collection
+        <small data-ar="موضة لكل لحظة">Fashion for Every Moment</small>
+      </div>
+    </div>
+
+    <h3 class="spread__title" data-ar="موضة لكل لحظة — من التيشيرت إلى البنطال.">Fashion for every moment — from the tee to the trouser.</h3>
+    <p class="spread__sub" data-ar="خزانة واحدة، مبنية على الأساسيات. من التيشيرتات اليومية إلى الهوديات الفاخرة — القطع التي يمدّ إليها جيل كامل يده فعلاً.">One wardrobe, built in essentials. From everyday tees to premium hoodies — the pieces a generation actually reaches for, refreshed each season.</p>
+
+    <div class="poster-wall">
+      <div class="poster-card">
+        <span class="poster-card__num">L. 01</span>
+        <div class="poster-card__type" style="font-size: 1.5rem; letter-spacing: 0.14em;" data-ar="تيشيرتات">T-SHIRTS</div>
+        <div class="poster-card__footer"><span data-ar="أساسيات">ESSENTIALS</span><span data-ar="يومي">EVERYDAY</span></div>
+      </div>
+      <div class="poster-card">
+        <span class="poster-card__num">L. 02</span>
+        <div class="poster-card__type" style="font-size: 1.6rem; letter-spacing: 0.08em;" data-ar="قمصان">SHIRTS</div>
+        <div class="poster-card__footer"><span data-ar="كلاسيك">CLASSIC</span><span data-ar="عصري">MODERN</span></div>
+      </div>
+      <div class="poster-card">
+        <span class="poster-card__num">L. 03</span>
+        <div class="poster-card__type" style="font-size: 1.9rem; letter-spacing: 0.02em;" data-ar="هوديات">HOODIES</div>
+        <div class="poster-card__footer"><span data-ar="فاخر">PREMIUM</span><span data-ar="راحة">COMFORT</span></div>
+      </div>
+      <div class="poster-card">
+        <span class="poster-card__num">L. 04</span>
+        <div class="poster-card__type" style="font-size: 2.1rem; letter-spacing: -0.02em;" data-ar="بناطيل">PANTS</div>
+        <div class="poster-card__footer"><span data-ar="يومي">EVERYDAY</span><span data-ar="قَصّة">FIT</span></div>
+      </div>
+      <div class="poster-card">
+        <span class="poster-card__num">L. 05</span>
+        <div class="poster-card__type" style="font-size: 2.3rem; letter-spacing: -0.05em;" data-ar="جاكيتات">JACKETS</div>
+        <div class="poster-card__footer"><span data-ar="موسمي">SEASONAL</span><span data-ar="خارجي">OUTER</span></div>
+      </div>
+      <div class="poster-card">
+        <span class="poster-card__num">L. 06</span>
+        <div class="poster-card__type" style="font-size: 2.7rem; letter-spacing: -0.08em;" data-ar="ستريت وير">STREET</div>
+        <div class="poster-card__footer"><span data-ar="التوقيع">SIGNATURE</span><span data-ar="خط">LINE</span></div>
+      </div>
+    </div>
+
+    <div class="spread__pullquote" data-ar="خزانة ملابس، لا كتالوج. قطع أقل، مصنوعة بإتقان — تلك هي الاستراتيجية كلها.">A wardrobe, not a catalogue. Fewer pieces, done properly, is the whole strategy.</div>
+  </div>
+</section>
+
+<!-- ================= BRANCHES ================= -->
+<section class="spread spread--buch" data-spread="05" id="branches">
+  <div class="spread__inner">
+    <div class="spread__head">
+      <span>SWAG / PORTFOLIO</span>
+      <span data-ar="فروعنا">BRANCHES</span>
+    </div>
+
+    <div class="spread__chapter-wrap">
+      <div class="spread__chapter">03</div>
+      <div class="spread__chapter-label" data-ar="حضورنا">
+        The Presence
+        <small data-ar="جدة · الرياض · الدمام">Jeddah · Riyadh · Dammam</small>
+      </div>
+    </div>
+
+    <h3 class="spread__title" data-ar="ثلاث مدن، تجربة واحدة — على الأرض وعلى الهاتف.">Three cities, one experience — on the floor and on the phone.</h3>
+    <p class="spread__sub" data-ar="البراند يُقابَل، لا يُقرأ. يمتد حضور سواج عبر مدن المملكة الثلاث الكبرى — تجربة متجر مدروسة على الأرض، وتجربة نظيفة ثنائية اللغة على الإنترنت.">A brand is met, not read. SWAG's presence spans the Kingdom's three major cities — a considered retail experience in person, and a clean, bilingual one online.</p>
+
+    <div class="cities">
+      <div class="city"><div class="city__name" data-ar="<svg class="pin" viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg>جدة"><svg class="pin" viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg>Jeddah</div><div class="city__meta" data-ar="متجر رئيسي · المقر">Flagship · Head Office</div></div>
+      <div class="city"><div class="city__name" data-ar="<svg class="pin" viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg>الرياض"><svg class="pin" viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg>Riyadh</div><div class="city__meta" data-ar="متجر رئيسي">Flagship Store</div></div>
+      <div class="city"><div class="city__name" data-ar="<svg class="pin" viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg>الدمام"><svg class="pin" viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg>Dammam</div><div class="city__meta" data-ar="متجر رئيسي">Flagship Store</div></div>
+    </div>
+    <div class="mapwrap">
+      <svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Saudi Arabia map">
+        <path d="M70 150 L150 110 L250 95 L330 70 L420 90 L500 120 L540 175 L520 240 L470 300 L380 340 L300 350 L230 335 L160 300 L110 250 L80 200 Z"
+              fill="#EDE8DA" stroke="#4A3526" stroke-width="1.2" stroke-linejoin="round" opacity="0.9"/>
+        <g class="map-pin">
+          <circle class="ring" cx="150" cy="235" r="6"/><circle class="dot" cx="150" cy="235" r="5"/>
+          <text x="150" y="258" text-anchor="middle">JEDDAH</text>
+        </g>
+        <g class="map-pin">
+          <circle class="ring" cx="345" cy="205" r="6"/><circle class="dot" cx="345" cy="205" r="5"/>
+          <text x="345" y="228" text-anchor="middle">RIYADH</text>
+        </g>
+        <g class="map-pin">
+          <circle class="ring" cx="475" cy="170" r="6"/><circle class="dot" cx="475" cy="170" r="5"/>
+          <text x="475" y="193" text-anchor="middle">DAMMAM</text>
+        </g>
+      </svg>
+      <span class="mapwrap__cap" data-ar="المملكة العربية السعودية">Kingdom of Saudi Arabia</span>
+    </div>
+
+
+    <div class="spread__body" style="max-width: 820px; margin-top: 2.5rem;">
+      <p data-ar="الحضور ليس عدد الأبواب فقط — بل أن تشعر جميعها بأنها البراند نفسه. بصمة سواج في ثلاث مدن مقصودة: وصول يكفي ليكون مؤثراً عبر المملكة، ومحكم بما يكفي ليبقى كل تجربة متسقة، من الشماعة حتى الدفع.">Presence is not just how many doors a brand has — it is whether they all feel like the same brand. SWAG's three-city footprint is deliberate: enough reach to matter across the Kingdom, tight enough to keep every experience consistent, from the hanger to the checkout.</p>
+
+      <div class="spread__pullquote" data-ar="الوصول لا يعني شيئاً إن لم يشعر المتجر العاشر بأنه الأول. الاتساق هو البصمة الحقيقية.">Reach means little if the tenth store does not feel like the first. Consistency is the real footprint.</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================= PALETTE (film-strip) ================= -->
+<section class="palette" id="palette">
+  <div class="palette__head">
+    <div>
+      <span class="eyebrow" data-ar="لوحة الألوان · ١٠ إطارات">FILM STRIP · 10 FRAMES</span>
+      <h2 class="palette__title" data-ar="لوحة ألوان <em>البراند</em>.">The house <em>palette</em>.</h2>
+    </div>
+    <div class="palette__count">
+      <span id="palette-current">01</span> / 10<br>
+      <span style="opacity:0.6" data-ar="مرّر للتقدّم">SCROLL TO ADVANCE</span>
+    </div>
+  </div>
+  <div class="palette__progress"><div class="palette__progress-bar" id="palette-bar"></div></div>
+  <div class="palette__progress-label">FRAME 01 — PORCELAIN</div>
+  <div class="palette__progress-label palette__progress-label--right" id="palette-frame-name">PORCELAIN</div>
+  <div class="filmstrip" id="filmstrip">
+    <div class="filmframe" style="--swatch: #FBF9F2">
+      <div class="filmframe__swatch"></div>
+      <div class="filmframe__num">FRAME 01</div>
+      <div class="filmframe__name">Porcelain</div>
+      <div class="filmframe__hex">#FBF9F2</div>
+      <div class="filmframe__pant"><span>SWAG</span><span>00-01</span></div>
+    </div>
+    <div class="filmframe" style="--swatch: #F4F0E5">
+      <div class="filmframe__swatch"></div>
+      <div class="filmframe__num">FRAME 02</div>
+      <div class="filmframe__name">Cream</div>
+      <div class="filmframe__hex">#F4F0E5</div>
+      <div class="filmframe__pant"><span>SWAG</span><span>00-02</span></div>
+    </div>
+    <div class="filmframe" style="--swatch: #EDE8DA">
+      <div class="filmframe__swatch"></div>
+      <div class="filmframe__num">FRAME 03</div>
+      <div class="filmframe__name">Sand</div>
+      <div class="filmframe__hex">#EDE8DA</div>
+      <div class="filmframe__pant"><span>SWAG</span><span>00-03</span></div>
+    </div>
+    <div class="filmframe" style="--swatch: #E5DFCC">
+      <div class="filmframe__swatch"></div>
+      <div class="filmframe__num">FRAME 04</div>
+      <div class="filmframe__name">Oat</div>
+      <div class="filmframe__hex">#E5DFCC</div>
+      <div class="filmframe__pant"><span>SWAG</span><span>00-04</span></div>
+    </div>
+    <div class="filmframe" style="--swatch: #C9A227">
+      <div class="filmframe__swatch"></div>
+      <div class="filmframe__num">FRAME 05</div>
+      <div class="filmframe__name">Gold</div>
+      <div class="filmframe__hex">#C9A227</div>
+      <div class="filmframe__pant"><span>SWAG</span><span>00-05</span></div>
+    </div>
+    <div class="filmframe" style="--swatch: #A8811F">
+      <div class="filmframe__swatch"></div>
+      <div class="filmframe__num">FRAME 06</div>
+      <div class="filmframe__name">Old Gold</div>
+      <div class="filmframe__hex">#A8811F</div>
+      <div class="filmframe__pant"><span>SWAG</span><span>00-06</span></div>
+    </div>
+    <div class="filmframe" style="--swatch: #7C5E12">
+      <div class="filmframe__swatch"></div>
+      <div class="filmframe__num">FRAME 07</div>
+      <div class="filmframe__name">Bronze</div>
+      <div class="filmframe__hex">#7C5E12</div>
+      <div class="filmframe__pant"><span>SWAG</span><span>00-07</span></div>
+    </div>
+    <div class="filmframe" style="--swatch: #4A3526">
+      <div class="filmframe__swatch"></div>
+      <div class="filmframe__num">FRAME 08</div>
+      <div class="filmframe__name">Coffee</div>
+      <div class="filmframe__hex">#4A3526</div>
+      <div class="filmframe__pant"><span>SWAG</span><span>00-08</span></div>
+    </div>
+    <div class="filmframe" style="--swatch: #2A2016">
+      <div class="filmframe__swatch"></div>
+      <div class="filmframe__num">FRAME 09</div>
+      <div class="filmframe__name">Espresso</div>
+      <div class="filmframe__hex">#2A2016</div>
+      <div class="filmframe__pant"><span>SWAG</span><span>00-09</span></div>
+    </div>
+    <div class="filmframe" style="--swatch: #1A1712">
+      <div class="filmframe__swatch"></div>
+      <div class="filmframe__num">FRAME 10</div>
+      <div class="filmframe__name">Ink</div>
+      <div class="filmframe__hex">#1A1712</div>
+      <div class="filmframe__pant"><span>SWAG</span><span>00-10</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= HIGHLIGHTS (video cards) ================= -->
+<div class="section-head reveal">
+  <div class="section-head__num">— HIGHLIGHTS —</div>
+  <h2 class="section-head__title" data-ar="أبرز <em>المحطات.</em>">Highlights &amp; <em>Milestones.</em></h2>
+  <p class="section-head__sub" data-ar="ثلاث لحظات تحكي قصة سواج بلمحة. اضغط الإطار لفتح فصله.">Three moments that tell the SWAG story at a glance. Tap a frame to open the chapter it stands for.</p>
+</div>
+<section class="lectures">
+  <div class="lectures__grid">
+    <div class="talk reveal">
+      <div class="talk__video" data-video="fifty-million">
+        <img class="talk__poster" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20800%20500%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%232A2016%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%231A1712%22/%3E%3C/linearGradient%3E%3Cpattern%20id%3D%22p%22%20width%3D%2226%22%20height%3D%2226%22%20patternUnits%3D%22userSpaceOnUse%22%3E%3Cpath%20d%3D%22M0%2026%20L26%200%22%20stroke%3D%22%23C9A227%22%20stroke-width%3D%220.4%22%20opacity%3D%220.12%22/%3E%3C/pattern%3E%3C/defs%3E%3Crect%20width%3D%22800%22%20height%3D%22500%22%20fill%3D%22url%28%23g%29%22/%3E%3Crect%20width%3D%22800%22%20height%3D%22500%22%20fill%3D%22url%28%23p%29%22/%3E%3Ctext%20x%3D%22400%22%20y%3D%22255%22%20text-anchor%3D%22middle%22%20font-family%3D%22Georgia%2C%20serif%22%20font-size%3D%22200%22%20font-style%3D%22italic%22%20fill%3D%22%23C9A227%22%20opacity%3D%220.92%22%3EI%3C/text%3E%3Ctext%20x%3D%22400%22%20y%3D%22330%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%2220%22%20letter-spacing%3D%228%22%20fill%3D%22%23F5F0E4%22%20opacity%3D%220.9%22%3EFIFTY%20MILLION%3C/text%3E%3Ctext%20x%3D%22400%22%20y%3D%22360%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%2212%22%20letter-spacing%3D%224%22%20fill%3D%22%23C9A227%22%20opacity%3D%220.7%22%3EPIECES%20DELIVERED%3C/text%3E%3C/svg%3E" alt="">
+        <span class="talk__corner" data-ar="منذ ٢٠١٢">SINCE 2012</span>
+        <button class="talk__play" aria-label="Play"></button>
+        <span class="talk__duration">01</span>
+      </div>
+      <div class="talk__meta"><span data-ar="محطة">MILESTONE</span><span data-ar="+٥٠ مليون قطعة">50M+ PIECES</span></div>
+      <h3 class="talk__title" data-ar="خمسون مليون <em>قطعة</em>.">Fifty million <em>pieces</em>.</h3>
+      <p class="talk__blurb" data-ar="سجل لا تبلغه أغلب البراندات — أكثر من خمسين مليون قطعة مُسلَّمة منذ ٢٠١٢، قطعة تلو الأخرى.">A track record most brands never reach — more than fifty million pieces delivered since 2012, one satisfied wearer at a time.</p>
+    </div>
+    <div class="talk reveal reveal--delay-1">
+      <div class="talk__video" data-video="three-cities">
+        <img class="talk__poster" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20800%20500%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%232A2016%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%231A1712%22/%3E%3C/linearGradient%3E%3Cpattern%20id%3D%22p%22%20width%3D%2226%22%20height%3D%2226%22%20patternUnits%3D%22userSpaceOnUse%22%3E%3Cpath%20d%3D%22M0%2026%20L26%200%22%20stroke%3D%22%23C9A227%22%20stroke-width%3D%220.4%22%20opacity%3D%220.12%22/%3E%3C/pattern%3E%3C/defs%3E%3Crect%20width%3D%22800%22%20height%3D%22500%22%20fill%3D%22url%28%23g%29%22/%3E%3Crect%20width%3D%22800%22%20height%3D%22500%22%20fill%3D%22url%28%23p%29%22/%3E%3Ctext%20x%3D%22400%22%20y%3D%22255%22%20text-anchor%3D%22middle%22%20font-family%3D%22Georgia%2C%20serif%22%20font-size%3D%22200%22%20font-style%3D%22italic%22%20fill%3D%22%23C9A227%22%20opacity%3D%220.92%22%3EII%3C/text%3E%3Ctext%20x%3D%22400%22%20y%3D%22330%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%2220%22%20letter-spacing%3D%228%22%20fill%3D%22%23F5F0E4%22%20opacity%3D%220.9%22%3ETHREE%20CITIES%3C/text%3E%3Ctext%20x%3D%22400%22%20y%3D%22360%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%2212%22%20letter-spacing%3D%224%22%20fill%3D%22%23C9A227%22%20opacity%3D%220.7%22%3EJEDDAH%20RIYADH%20DAMMAM%3C/text%3E%3C/svg%3E" alt="">
+        <span class="talk__corner" data-ar="السعودية">KSA</span>
+        <button class="talk__play" aria-label="Play"></button>
+        <span class="talk__duration">02</span>
+      </div>
+      <div class="talk__meta"><span data-ar="الحضور">PRESENCE</span><span data-ar="٣ مدن">3 CITIES</span></div>
+      <h3 class="talk__title" data-ar="جدة · الرياض · <em>الدمام</em>.">Jeddah · Riyadh · <em>Dammam</em>.</h3>
+      <p class="talk__blurb" data-ar="بصمة راسخة عبر مدن المملكة الثلاث الكبرى — وصول يهمّ، ومحكم بما يجعل كل متجر يشبه الآخر.">A settled footprint across the Kingdom's three major cities — reach that matters, kept tight enough that every store feels like the same brand.</p>
+    </div>
+    <div class="talk reveal reveal--delay-2">
+      <div class="talk__video" data-video="new-arrivals">
+        <img class="talk__poster" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20800%20500%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%232A2016%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%231A1712%22/%3E%3C/linearGradient%3E%3Cpattern%20id%3D%22p%22%20width%3D%2226%22%20height%3D%2226%22%20patternUnits%3D%22userSpaceOnUse%22%3E%3Cpath%20d%3D%22M0%2026%20L26%200%22%20stroke%3D%22%23C9A227%22%20stroke-width%3D%220.4%22%20opacity%3D%220.12%22/%3E%3C/pattern%3E%3C/defs%3E%3Crect%20width%3D%22800%22%20height%3D%22500%22%20fill%3D%22url%28%23g%29%22/%3E%3Crect%20width%3D%22800%22%20height%3D%22500%22%20fill%3D%22url%28%23p%29%22/%3E%3Ctext%20x%3D%22400%22%20y%3D%22255%22%20text-anchor%3D%22middle%22%20font-family%3D%22Georgia%2C%20serif%22%20font-size%3D%22200%22%20font-style%3D%22italic%22%20fill%3D%22%23C9A227%22%20opacity%3D%220.92%22%3EIII%3C/text%3E%3Ctext%20x%3D%22400%22%20y%3D%22330%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%2220%22%20letter-spacing%3D%228%22%20fill%3D%22%23F5F0E4%22%20opacity%3D%220.9%22%3ENEW%20ARRIVALS%3C/text%3E%3Ctext%20x%3D%22400%22%20y%3D%22360%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%2212%22%20letter-spacing%3D%224%22%20fill%3D%22%23C9A227%22%20opacity%3D%220.7%22%3EEVERY%20SEASON%3C/text%3E%3C/svg%3E" alt="">
+        <span class="talk__corner" data-ar="كل موسم">EACH SEASON</span>
+        <button class="talk__play" aria-label="Play"></button>
+        <span class="talk__duration">03</span>
+      </div>
+      <div class="talk__meta"><span data-ar="التشكيلة">COLLECTION</span><span data-ar="وصل حديثاً">NEW ARRIVALS</span></div>
+      <h3 class="talk__title" data-ar="جديد، <em>كل موسم</em>.">Fresh, <em>every season</em>.</h3>
+      <p class="talk__blurb" data-ar="الخزانة لا تشيخ. وصل حديث كل موسم عبر التيشيرتات والقمصان والهوديات والبناطيل.">The wardrobe never goes stale. New arrivals land each season across tees, shirts, hoodies and pants — for every moment.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="contact2" id="contact">
+  <p class="contact2__pre" data-ar="تواصل معنا">Get in touch</p>
+  <h2>SWAG</h2>
+  <a href="mailto:info@swag.sa" class="mail">info@swag.sa</a>
+  <div class="contact2__row">
+    <span data-ar="جدة · الرياض · الدمام">Jeddah · Riyadh · Dammam</span>
+    <span data-ar="أزياء شبابية · منذ ٢٠١٢">Youth Fashion · Since 2012</span>
+    <span data-ar="واتساب ٩٦٦٥٣٩٩٠٠٠٨٣+">WhatsApp +966 53 990 0083</span>
+  </div>
+  <div class="social">
+    <a class="social__link" href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+    <a class="social__link" href="https://snapchat.com" target="_blank" rel="noopener" aria-label="Snapchat"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c2.7 0 4.3 2 4.4 4.6.02.6 0 1.2-.03 1.8.5.3 1 .1 1.5-.1.6-.2 1.1.6.5 1-.5.4-1.3.6-1.8.9-.3.2 0 .7.2 1 .7 1.2 1.8 2 3.1 2.4.5.1.4.8-.1 1-1 .3-1.2.3-1.4.9-.1.4-.6.3-1 .3-.8 0-1.5-.3-2.3.1-.7.4-1.4 1.3-2.9 1.3s-2.2-.9-2.9-1.3c-.8-.4-1.5-.1-2.3-.1-.4 0-.9.1-1-.3-.2-.6-.4-.6-1.4-.9-.5-.2-.6-.9-.1-1 1.3-.4 2.4-1.2 3.1-2.4.2-.3.5-.8.2-1-.5-.3-1.3-.5-1.8-.9-.6-.4-.1-1.2.5-1 .5.2 1 .4 1.5.1-.03-.6-.05-1.2-.03-1.8C7.7 4 9.3 2 12 2z"/></svg></a>
+    <a class="social__link" href="https://linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 0 5 8.5a2.5 2.5 0 0 0 0-5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2.05 3.76-2.05C21 8.65 22 10.5 22 13.6V21h-4v-6.6c0-1.57-.03-3.6-2.2-3.6-2.2 0-2.54 1.72-2.54 3.5V21h-4z"/></svg></a>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  <span data-ar="سواج · أزياء شبابية · منذ ٢٠١٢">SWAG · Youth Fashion · Since 2012</span>
+  <span data-ar="جدة · المملكة العربية السعودية">Jeddah · Kingdom of Saudi Arabia</span>
+</footer>
+
+
+<script>
+/* ========== LENIS SMOOTH SCROLL ========== */
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isTouch = window.matchMedia('(pointer: coarse)').matches;
+
+if (typeof Lenis !== 'undefined' && !reduced) {
+  const lenis = new Lenis({
+    duration: 1.1,
+    easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true,
+    smoothTouch: false,
+  });
+  function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+  lenis.on('scroll', () => { if (window.ScrollTrigger) ScrollTrigger.update(); });
+}
+
+/* ========== GSAP REGISTER ========== */
+if (window.gsap && window.ScrollTrigger) {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+/* ========== RISOGRAPH CURSOR DOT TRAIL ========== */
+(function cursorTrail() {
+  if (isTouch || reduced) return;
+  const canvas = document.getElementById('cursor-canvas');
+  const ctx = canvas.getContext('2d');
+  let dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  function resize() {
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = window.innerHeight * dpr;
+    canvas.style.width = window.innerWidth + 'px';
+    canvas.style.height = window.innerHeight + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const dots = [];
+  let lastX = window.innerWidth / 2, lastY = window.innerHeight / 2;
+
+  window.addEventListener('mousemove', e => {
+    lastX = e.clientX; lastY = e.clientY;
+    // spawn 2-3 dots with offset
+    const count = 2 + Math.floor(Math.random() * 2);
+    for (let i = 0; i < count; i++) {
+      dots.push({
+        x: e.clientX + (Math.random() - 0.5) * 6,
+        y: e.clientY + (Math.random() - 0.5) * 6,
+        r: 0.8 + Math.random() * 2.2,
+        life: 1,
+        decay: 0.012 + Math.random() * 0.022,
+        hue: 42 + Math.random() * 12, // gold range
+        sat: 55 + Math.random() * 20,
+        lig: 34 + Math.random() * 12,
+      });
+    }
+    if (dots.length > 600) dots.splice(0, dots.length - 600);
+  });
+
+  function tick() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = dots.length - 1; i >= 0; i--) {
+      const d = dots[i];
+      d.life -= d.decay;
+      if (d.life <= 0) { dots.splice(i, 1); continue; }
+      const alpha = d.life * 0.55;
+      ctx.fillStyle = `hsla(${d.hue}, ${d.sat}%, ${d.lig}%, ${alpha})`;
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, d.r * Math.max(0.2, d.life), 0, Math.PI * 2);
+      ctx.fill();
+    }
+    // Bright cursor-position dot
+    ctx.fillStyle = 'rgba(150, 110, 18, 0.9)';
+    ctx.beginPath();
+    ctx.arc(lastX, lastY, 2, 0, Math.PI * 2);
+    ctx.fill();
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+/* ========== HERO KINETIC TYPOGRAPHY ========== */
+(function heroKinetic() {
+  if (reduced) return;
+  const letters = document.querySelectorAll('.hero__name span');
+  if (!letters.length) return;
+
+  const motions = [
+    { y: -120, opacity: 0, rotate: -8 },
+    { y: 120, opacity: 0, rotate: 6 },
+    { x: -100, opacity: 0, rotate: -4 },
+    { x: 100, opacity: 0, rotate: 5 },
+    { scale: 0, opacity: 0, rotate: 180 },
+    { y: -80, opacity: 0, rotate: 12 },
+  ];
+
+  letters.forEach((letter, i) => {
+    const m = motions[i % motions.length];
+    gsap.from(letter, {
+      ...m,
+      duration: 1.4,
+      ease: 'expo.out',
+      delay: 0.3 + i * 0.07,
+      clearProps: 'transform',
+    });
+  });
+
+  // Byline reveal
+  gsap.from('.hero__byline', {
+    opacity: 0, y: 20,
+    duration: 1.2,
+    ease: 'power3.out',
+    delay: 1.4,
+  });
+
+  // Meta lines
+  gsap.from('.hero__meta-top span, .hero__meta-bottom span', {
+    opacity: 0,
+    duration: 1,
+    ease: 'power2.out',
+    stagger: 0.1,
+    delay: 1.8,
+  });
+})();
+
+/* ========== SPREAD CROSS-FADE WITH HORIZONTAL SLIDE ========== */
+(function spreads() {
+  const els = document.querySelectorAll('.spread');
+  if (!els.length) return;
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      const el = entry.target;
+      if (entry.isIntersecting && entry.intersectionRatio > 0.15) {
+        el.classList.add('is-in');
+        el.classList.remove('is-past');
+      } else if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
+        el.classList.add('is-past');
+      }
+    });
+  }, {
+    threshold: [0, 0.15, 0.4, 0.7],
+    rootMargin: '-5% 0px -5% 0px'
+  });
+
+  els.forEach(el => obs.observe(el));
+})();
+
+/* ========== REVEAL ON SCROLL ========== */
+(function reveals() {
+  const els = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-in');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.18, rootMargin: '0px 0px -8% 0px' });
+  els.forEach(el => obs.observe(el));
+})();
+
+/* ========== RUNNING HEAD PAGE NUMBER ========== */
+(function pageNumber() {
+  const numEl = document.getElementById('page-num');
+  if (!numEl) return;
+  const total = 220;
+  function update() {
+    const progress = Math.max(0, Math.min(1, window.scrollY / (document.body.scrollHeight - window.innerHeight)));
+    const page = 8 + Math.floor(progress * (total - 8));
+    numEl.textContent = String(page).padStart(3, '0');
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+
+/* ========== TYPE SPECIMEN — DRAG + PINCH ========== */
+(function specimenDrag() {
+  const desk = document.getElementById('specimens-desk');
+  if (!desk) return;
+  const cards = desk.querySelectorAll('.specimen');
+
+  cards.forEach(card => {
+    let scale = 1;
+    let dragX = 0, dragY = 0;
+    let startX, startY;
+    let isDragging = false;
+    let activePointerId = null;
+    let zIndex = 5;
+
+    function applyTransform() {
+      card.style.transform = `translate(${dragX}px, ${dragY}px) scale(${scale})`;
+    }
+
+    function bringFront() {
+      zIndex += 1;
+      card.style.zIndex = zIndex;
+    }
+
+    // Pointer events (mouse + touch single-finger)
+    card.addEventListener('pointerdown', e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      // If two pointers already down, ignore
+      if (activePointerId !== null && activePointerId !== e.pointerId) return;
+      isDragging = true;
+      activePointerId = e.pointerId;
+      startX = e.clientX;
+      startY = e.clientY;
+      card.classList.add('is-dragging');
+      bringFront();
+      card.setPointerCapture(e.pointerId);
+    });
+
+    card.addEventListener('pointermove', e => {
+      if (!isDragging || e.pointerId !== activePointerId) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      dragX += dx;
+      dragY += dy;
+      startX = e.clientX;
+      startY = e.clientY;
+      applyTransform();
+    });
+
+    function endDrag(e) {
+      if (e.pointerId !== activePointerId) return;
+      isDragging = false;
+      activePointerId = null;
+      card.classList.remove('is-dragging');
+      try { card.releasePointerCapture(e.pointerId); } catch(_){}
+    }
+    card.addEventListener('pointerup', endDrag);
+    card.addEventListener('pointercancel', endDrag);
+
+    // Wheel to scale (desktop "pinch")
+    card.addEventListener('wheel', e => {
+      e.preventDefault();
+      const delta = -e.deltaY * 0.0015;
+      scale = Math.max(0.55, Math.min(2.2, scale + delta));
+      applyTransform();
+    }, { passive: false });
+
+    // Touch pinch (two-finger)
+    let pinchInitialDist = 0;
+    let pinchInitialScale = 1;
+    const touchState = {};
+
+    card.addEventListener('touchstart', e => {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        const t1 = e.touches[0], t2 = e.touches[1];
+        pinchInitialDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+        pinchInitialScale = scale;
+        isDragging = false;
+      }
+    }, { passive: false });
+
+    card.addEventListener('touchmove', e => {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        const t1 = e.touches[0], t2 = e.touches[1];
+        const dist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+        scale = Math.max(0.55, Math.min(2.2, pinchInitialScale * (dist / Math.max(20, pinchInitialDist))));
+        applyTransform();
+      }
+    }, { passive: false });
+
+    // Download link (decorative)
+    const dl = card.querySelector('.specimen__download');
+    if (dl) {
+      dl.addEventListener('click', e => {
+        e.stopPropagation();
+        dl.textContent = '✓ REQUESTED';
+        setTimeout(() => { dl.innerHTML = 'SPEC.PDF'; }, 1800);
+      });
+    }
+  });
+})();
+
+/* ========== COLOR PALETTE — FILM STRIP SCRUB ========== */
+(function filmstrip() {
+  const strip = document.getElementById('filmstrip');
+  const section = document.getElementById('palette');
+  const bar = document.getElementById('palette-bar');
+  const current = document.getElementById('palette-current');
+  const frameName = document.getElementById('palette-frame-name');
+  const label = document.querySelector('.palette__progress-label:not(.palette__progress-label--right)');
+
+  if (!strip || !section) return;
+
+  const frames = section.querySelectorAll('.filmframe');
+  const frameNames = ['Porcelain', 'Cream', 'Sand', 'Oat', 'Gold', 'Old Gold', 'Bronze', 'Coffee', 'Espresso', 'Ink'];
+  function getTotalScroll() {
+    return Math.max(0, strip.scrollWidth - window.innerWidth + 200);
+  }
+
+  let progress = 0;
+  let targetProgress = 0;
+
+  function setStrip() {
+    const total = getTotalScroll();
+    const x = -progress * total;
+    strip.style.transform = `translateX(${x}px)`;
+    if (bar) bar.style.width = (progress * 100) + '%';
+
+    const idx = Math.min(frames.length - 1, Math.floor(progress * frames.length));
+    if (current) current.textContent = String(idx + 1).padStart(2, '0');
+    if (frameName) frameName.textContent = frameNames[idx] ? frameNames[idx].toUpperCase() : '';
+    if (label) label.textContent = `FRAME ${String(idx + 1).padStart(2, '0')} — ${(frameNames[idx] || '').toUpperCase()}`;
+  }
+
+  // Use a ScrollTrigger pinned section
+  if (window.ScrollTrigger && window.gsap && !reduced) {
+    ScrollTrigger.create({
+      trigger: section,
+      start: 'top top',
+      end: () => '+=' + (window.innerHeight * 2.5),
+      pin: true,
+      scrub: 1,
+      onUpdate: self => {
+        targetProgress = self.progress;
+      },
+      onLeaveBack: () => { targetProgress = 0; }
+    });
+  } else {
+    // Fallback: just horizontal layout, no scrub
+    section.style.padding = '4rem 0';
+    strip.style.overflowX = 'auto';
+  }
+
+  function loop() {
+    progress += (targetProgress - progress) * 0.09;
+    setStrip();
+    requestAnimationFrame(loop);
+  }
+  loop();
+
+  window.addEventListener('resize', setStrip);
+})();
+
+/* ========== TALK VIDEO CLICK — PLACEHOLDER BEHAVIOUR ========== */
+document.querySelectorAll('.talk__video').forEach(vid => {
+  const play = vid.querySelector('.talk__play');
+  const poster = vid.querySelector('.talk__poster');
+  if (!play) return;
+  play.addEventListener('click', e => {
+    e.preventDefault();
+    // Replace play button visually with "now playing" state
+    play.style.transform = 'translate(-50%, -50%) scale(0.85)';
+    play.style.background = 'var(--gold)';
+    play.querySelector ? null : null;
+    if (poster) poster.style.filter = 'brightness(0.45) contrast(1.1) saturate(0.6)';
+    // Append a fake "now playing" overlay
+    if (!vid.querySelector('.talk__now-playing')) {
+      const overlay = document.createElement('div');
+      overlay.className = 'talk__now-playing';
+      overlay.style.cssText = 'position:absolute;bottom:1rem;left:1rem;font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);background:rgba(5,20,10,0.7);padding:0.4rem 0.7rem;backdrop-filter:blur(4px);';
+      overlay.textContent = '▶ NOW PLAYING';
+      vid.appendChild(overlay);
+    }
+  });
+});
+
+/* ========== INDEX ENTRY CLICK — SCROLL TO SPREAD ========== */
+document.querySelectorAll('.index__entry').forEach((entry, i) => {
+  entry.addEventListener('click', () => {
+    const spreads = document.querySelectorAll('.spread');
+    const target = spreads[i];
+    if (target) {
+      window.scrollTo({ top: target.offsetTop - 40, behavior: 'smooth' });
+    }
+  });
+  entry.style.cursor = isTouch ? 'pointer' : 'none';
+});
+
+
+/* ========== NAVBAR: scroll bg + hamburger + smooth scroll ========== */
+(function navbar(){
+  const nav = document.getElementById('nav');
+  const burger = document.getElementById('burger');
+  const links = document.getElementById('navlinks');
+
+  if (burger && links) {
+    burger.addEventListener('click', () => links.classList.toggle('open'));
+  }
+  document.querySelectorAll('[data-scroll]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const sel = a.getAttribute('data-target') || a.getAttribute('href');
+      const t = sel && document.querySelector(sel);
+      if (t) window.scrollTo({ top: Math.max(0, t.offsetTop - 60), behavior: 'smooth' });
+      if (links) links.classList.remove('open');
+    });
+  });
+  window.addEventListener('scroll', () => {
+    if (nav) nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+})();
+
+/* ========== LANGUAGE TOGGLE (EN / AR) ========== */
+(function language(){
+  const btn = document.getElementById('langToggle');
+  // capture English (current innerHTML) as data-en for every translatable node
+  document.querySelectorAll('[data-ar]').forEach(el => {
+    el.setAttribute('data-en', el.innerHTML.trim());
+  });
+  let lang = 'en';
+  function apply(l){
+    lang = l;
+    const root = document.documentElement;
+    root.setAttribute('lang', l);
+    root.setAttribute('dir', l === 'ar' ? 'rtl' : 'ltr');
+    document.querySelectorAll('[data-ar]').forEach(el => {
+      const v = el.getAttribute('data-' + l);
+      if (v !== null) el.innerHTML = v;
+    });
+    if (btn) btn.textContent = (l === 'en' ? 'عربي' : 'EN');
+  }
+  if (btn) btn.addEventListener('click', () => apply(lang === 'en' ? 'ar' : 'en'));
+})();
+</script>
+</body>
+</html>
