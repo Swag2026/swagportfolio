@@ -1650,6 +1650,73 @@ body::after {
   font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em;
   text-transform: uppercase; color: var(--ivory); opacity: 0.5; }
 
+/* ================= SOCIAL FEED (INSTAGRAM) ================= */
+.feed { max-width: 1300px; margin: 0 auto; padding: 2rem 2rem 6rem; position: relative; z-index: 3; }
+
+.feed__grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.75rem;
+  margin-top: 3rem;
+}
+@media (max-width: 950px) { .feed__grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 560px) { .feed__grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; } }
+
+.feed__post {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  display: block;
+  background: var(--jungle-mid);
+}
+.feed__post img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s var(--ease-quiet); }
+.feed__post:hover img { transform: scale(1.06); }
+
+.feed__overlay {
+  position: absolute; inset: 0;
+  background: rgba(26, 23, 18, 0.6);
+  opacity: 0; transition: opacity 0.35s var(--ease-quiet);
+  display: flex; align-items: center; justify-content: center; gap: 1.5rem;
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.03em;
+  color: var(--jungle-deep);
+}
+.feed__post:hover .feed__overlay { opacity: 1; }
+.feed__overlay span { display: inline-flex; align-items: center; gap: 0.4rem; }
+.feed__overlay svg { width: 15px; height: 15px; }
+
+.feed__featured {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.5rem;
+}
+.feed__featured-caption {
+  text-align: center;
+  margin-top: 1rem;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ivory);
+  opacity: 0.5;
+}
+
+.feed__cta { margin-top: 3rem; display: flex; justify-content: center; }
+.feed__follow {
+  display: inline-flex; align-items: center; gap: 0.75rem;
+  padding: 0.9rem 2rem;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-family: var(--sans); font-size: 12px; font-weight: 500;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.4s var(--ease-quiet), color 0.4s var(--ease-quiet);
+  cursor: none;
+}
+@media (pointer: coarse) { .feed__follow { cursor: pointer; } }
+.feed__follow:hover { background: var(--gold); color: var(--jungle-deep); }
+.feed__follow svg { width: 18px; height: 18px; }
+html[dir="rtl"] .feed__follow { letter-spacing: 0.03em; font-size: 1em; }
+
 /* ================= ARABIC / RTL ================= */
 html[dir="rtl"] body { font-family: 'Tajawal', var(--sans); }
 html[dir="rtl"] .serif, html[dir="rtl"] h1, html[dir="rtl"] h2, html[dir="rtl"] h3 { font-family: 'Tajawal', var(--serif); }
@@ -1657,6 +1724,35 @@ html[dir="rtl"] .manifesto__body, html[dir="rtl"] .spread__body,
 html[dir="rtl"] .spread__sub, html[dir="rtl"] .section-head__sub { text-align: right; }
 html[dir="rtl"] .nav__links { direction: rtl; }
 html[dir="rtl"] .stat__num, html[dir="rtl"] .filmframe__hex { direction: ltr; }
+
+/* Tajawal renders smaller than the Latin faces at the same font-size,
+   so bump the base scale and relax the tight tracking used for
+   uppercase Latin micro-labels (Arabic has no uppercase, so the extra
+   letter-spacing just adds dead space and makes it look tinier). */
+html[dir="rtl"] { font-size: 18px; }
+
+html[dir="rtl"] .eyebrow,
+html[dir="rtl"] .hero__meta-top, html[dir="rtl"] .hero__meta-bottom, html[dir="rtl"] .hero__byline,
+html[dir="rtl"] .running-head,
+html[dir="rtl"] .spread__head, html[dir="rtl"] .spread__chapter-label, html[dir="rtl"] .spread__chapter-label small,
+html[dir="rtl"] .spread__caption, .index__cat, html[dir="rtl"] .index__num, html[dir="rtl"] .index__page,
+html[dir="rtl"] .type-features__item .label,
+html[dir="rtl"] .talk__meta, html[dir="rtl"] .talk__corner, html[dir="rtl"] .talk__duration,
+html[dir="rtl"] .book-mockup__footer,
+html[dir="rtl"] .palette__progress-label,
+html[dir="rtl"] .specimens__hint, html[dir="rtl"] .specimen__head, html[dir="rtl"] .specimen__footer,
+html[dir="rtl"] .logo-display__corner, html[dir="rtl"] .specimen-stage__corner,
+html[dir="rtl"] .poster-card__footer, html[dir="rtl"] .city__meta,
+html[dir="rtl"] .spread__meta-item .label, html[dir="rtl"] .section-head__num {
+  font-size: 1.25em;
+  letter-spacing: 0.03em;
+}
+
+html[dir="rtl"] .spread__meta-item .value,
+html[dir="rtl"] .bottle-spec .value, html[dir="rtl"] .bottle-spec .label,
+html[dir="rtl"] .poster-card__type {
+  font-size: 1.1em;
+}
 
 /* ================= LIGHT THEME OVERRIDES ================= */
 :root{ --ink:#1A1712; --brown:#4A3526; --gold-accent:#C9A227; }
@@ -1720,6 +1816,12 @@ body::before{ background:
 
 <canvas class="cursor-canvas" id="cursor-canvas"></canvas>
 
+<!-- ================= RUNNING HEAD ================= -->
+<div class="running-head">
+  <span data-ar="سواج · ملف الأزياء">SWAG / FASHION PORTFOLIO</span>
+  <span>PAGE <span id="page-num">008</span> / 220</span>
+</div>
+
 <!-- ================= NAVBAR ================= -->
 <nav class="nav" id="nav">
   <div class="nav__group nav__group--left">
@@ -1731,9 +1833,12 @@ body::before{ background:
   <div class="nav__group nav__group--center">
     <ul class="nav__links" id="navlinks">
       <li><a href="#contact" data-scroll data-target="#contact" data-ar="تواصل">Contact</a></li>
+      <li><a href="#feed" data-scroll data-target="#feed" data-ar="إنستغرام">Feed</a></li>
       <li><a href="#branches" data-scroll data-target="#branches" data-ar="فروعنا">Branches</a></li>
+      <li><a href="#typeface" data-scroll data-target="#typeface" data-ar="الخط الطباعي">Typeface</a></li>
       <li><a href="#quality" data-scroll data-target="#quality" data-ar="الجودة">Quality</a></li>
       <li><a href="#products" data-scroll data-target="#products" data-ar="المنتجات">Products</a></li>
+      <li><a href="#identity" data-scroll data-target="#identity" data-ar="الهوية">Identity</a></li>
       <li><a href="#about" data-scroll data-target="#about" data-ar="من نحن">About Us</a></li>
     </ul>
   </div>
@@ -1772,6 +1877,46 @@ body::before{ background:
   </div>
 </section>
 
+<!-- ================= INDEX ================= -->
+<section class="index reveal" id="index">
+  <div class="index__header">
+    <span class="eyebrow" data-ar="المحتويات">CONTENTS</span>
+    <h2 class="index__title" data-ar="الفهرس">Index</h2>
+  </div>
+  <ul class="index__list">
+    <li class="index__entry">
+      <span class="index__num">01</span>
+      <span class="index__name" data-ar="الهوية">Identity</span>
+      <span class="index__cat" data-ar="الشعار والنظام البصري">Logo &amp; System</span>
+      <span class="index__page">009</span>
+    </li>
+    <li class="index__entry">
+      <span class="index__num">02</span>
+      <span class="index__name" data-ar="الجودة">Quality</span>
+      <span class="index__cat" data-ar="الخامة والقصّة">Fabric &amp; Fit</span>
+      <span class="index__page">032</span>
+    </li>
+    <li class="index__entry">
+      <span class="index__num">03</span>
+      <span class="index__name" data-ar="المنتجات">Products</span>
+      <span class="index__cat" data-ar="حائط الملصقات">Poster Wall</span>
+      <span class="index__page">061</span>
+    </li>
+    <li class="index__entry">
+      <span class="index__num">04</span>
+      <span class="index__name" data-ar="الخط الطباعي">Typeface</span>
+      <span class="index__cat" data-ar="نموذج الحروف">Type Specimen</span>
+      <span class="index__page">094</span>
+    </li>
+    <li class="index__entry">
+      <span class="index__num">05</span>
+      <span class="index__name" data-ar="الفروع">Branches</span>
+      <span class="index__cat" data-ar="ثلاث مدن">Three Cities</span>
+      <span class="index__page">128</span>
+    </li>
+  </ul>
+</section>
+
 <!-- ================= ABOUT ================= -->
 <section class="manifesto reveal" id="about">
   <div class="manifesto__header">
@@ -1790,6 +1935,76 @@ body::before{ background:
     <div class="stat"><div class="stat__num">2012</div><div class="stat__label" data-ar="تأسست في جدة">Founded in Jeddah</div></div>
     <div class="stat"><div class="stat__num">14+</div><div class="stat__label" data-ar="عاماً من الثقة">Years of Trust</div></div>
     <div class="stat"><div class="stat__num">3</div><div class="stat__label" data-ar="مدن رئيسية">Major Cities</div></div>
+  </div>
+</section>
+
+<!-- ================= IDENTITY ================= -->
+<section class="spread spread--kunsthaus" data-spread="01" id="identity">
+  <div class="spread__inner">
+    <div class="spread__head">
+      <span>SWAG / PORTFOLIO</span>
+      <span data-ar="الهوية">IDENTITY</span>
+    </div>
+
+    <div class="spread__chapter-wrap">
+      <div class="spread__chapter">00</div>
+      <div class="spread__chapter-label" data-ar="العلامة">
+        The Mark
+        <small data-ar="الشعار والنظام">Logo &amp; System</small>
+      </div>
+    </div>
+
+    <h3 class="spread__title" data-ar="علامة واحدة، تُقرأ بوضوح على أي مقاس وأي سطح.">One mark, legible at any size, on any surface.</h3>
+    <p class="spread__sub" data-ar="شعار سواج مبني على حروف صريحة لا تحتاج زخرفة — يعمل على وسم صغير كما يعمل على جدار متجر كامل.">The SWAG mark is built from plain letterforms that need no decoration — it works as small as a woven label and as large as a storefront wall.</p>
+
+    <div class="spread__meta">
+      <div class="spread__meta-item">
+        <span class="label" data-ar="النوع">Type</span>
+        <span class="value" data-ar="وردمارك">Wordmark</span>
+      </div>
+      <div class="spread__meta-item">
+        <span class="label" data-ar="الألوان">Colors</span>
+        <span class="value" data-ar="ذهبي · عاجي">Gold · Ivory</span>
+      </div>
+      <div class="spread__meta-item">
+        <span class="label" data-ar="أدنى مساحة">Clear Space</span>
+        <span class="value" data-ar="ضعف ارتفاع الحرف">2× cap height</span>
+      </div>
+      <div class="spread__meta-item">
+        <span class="label" data-ar="الاستخدام">Usage</span>
+        <span class="value" data-ar="وسم · متجر · رقمي">Label · Store · Digital</span>
+      </div>
+    </div>
+
+    <div class="spread__layout">
+      <div class="logo-display">
+        <span class="logo-display__corner logo-display__corner--tl">01 / MARK</span>
+        <span class="logo-display__corner logo-display__corner--tr">SWAG</span>
+        <svg class="logo-display__svg logo-paths" viewBox="0 0 360 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SWAG logo">
+          <text x="180" y="100" text-anchor="middle" font-family="Georgia, serif" font-weight="700" font-size="72" fill="#1A1712" stroke="none">SWAG</text>
+          <rect x="10" y="128" width="340" height="1.5" fill="#C9A227" stroke="none"/>
+        </svg>
+        <span class="logo-display__corner logo-display__corner--bl" data-ar="تأسست ٢٠١٢">EST. 2012</span>
+        <span class="logo-display__corner logo-display__corner--br" data-ar="السعودية">KSA</span>
+
+        <div class="logo-grid">
+          <div class="logo-grid__item"><svg viewBox="0 0 40 40"><rect x="4" y="4" width="32" height="32" fill="none" stroke="#A8811F" stroke-width="1.5"/></svg></div>
+          <div class="logo-grid__item"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="none" stroke="#A8811F" stroke-width="1.5"/></svg></div>
+          <div class="logo-grid__item"><svg viewBox="0 0 40 40"><polygon points="20,4 36,36 4,36" fill="none" stroke="#A8811F" stroke-width="1.5"/></svg></div>
+          <div class="logo-grid__item"><svg viewBox="0 0 40 40"><line x1="4" y1="36" x2="36" y2="4" stroke="#A8811F" stroke-width="1.5"/></svg></div>
+        </div>
+      </div>
+
+      <div class="spread__col-text">
+        <div class="spread__body">
+          <p data-ar="يقوم الوردمارك على حروف بأطراف مربّعة — شكل يُقرأ بنفس الوضوح سواء كان مطرّزاً على كم القميص أو مقصوصاً من الفينيل لواجهة متجر.">The wordmark sits on squared-terminal letterforms — a shape that reads the same whether it's embroidered on a cuff or cut from vinyl for a shopfront.</p>
+
+          <p data-ar="الذهبي محجوز للعلامة والتفاصيل المهمة فقط، وكل ما حولها يبقى هادئاً حتى يظل الشعار هو الأعلى صوتاً في الغرفة دائماً.">Gold is reserved for the mark and key details only; everything around it stays quiet, so the logo is always the loudest thing in the room.</p>
+
+          <div class="spread__pullquote" data-ar="الشعار الجيد هو من يصمد وهو صغير.">A good logo survives being small.</div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1942,6 +2157,82 @@ body::before{ background:
     </div>
 
     <div class="spread__pullquote" data-ar="خزانة ملابس، لا كتالوج. قطع أقل، مصنوعة بإتقان — تلك هي الاستراتيجية كلها.">A wardrobe, not a catalogue. Fewer pieces, done properly, is the whole strategy.</div>
+  </div>
+</section>
+
+<!-- ================= BRANCHES ================= -->
+<!-- ================= TYPEFACE ================= -->
+<section class="spread spread--rauhbart" data-spread="04" id="typeface">
+  <div class="spread__inner">
+    <div class="spread__head">
+      <span>SWAG / PORTFOLIO</span>
+      <span data-ar="الخط الطباعي">TYPEFACE</span>
+    </div>
+
+    <div class="spread__chapter-wrap">
+      <div class="spread__chapter">03</div>
+      <div class="spread__chapter-label" data-ar="الحرف">
+        The Letterform
+        <small data-ar="نموذج الخط">Type Specimen</small>
+      </div>
+    </div>
+
+    <h3 class="spread__title" data-ar="خط واحد يحمل صوت البراند من الوسم إلى اللوحة.">One typeface carries the brand's voice from the woven label to the billboard.</h3>
+    <p class="spread__sub" data-ar="كل عنوان وبطاقة ودفعة طباعة تمرّ عبر نفس الحروف — مكثّفة بما يكفي لطبعة على صدر هودي، وواضحة بما يكفي لتُقرأ من عرض المتجر.">Every headline, tag and print run passes through the same letterforms — condensed enough for a hoodie chest print, open enough to stay legible from across a store.</p>
+
+    <div class="specimen-stage">
+      <span class="specimen-stage__corner specimen-stage__corner--tl">RAUHBART / DISPLAY</span>
+      <div class="specimen-stage__glyph">S<em>W</em>AG</div>
+      <div class="specimen-stage__caption" data-ar="عريض · مكثّف · واثق">Bold · Condensed · Confident</div>
+      <span class="specimen-stage__corner specimen-stage__corner--br">04 / TYPE</span>
+    </div>
+
+    <div class="type-features">
+      <div class="type-features__item"><span class="num">01</span><span class="label" data-ar="الوزن: عريض">Weight: Bold</span></div>
+      <div class="type-features__item"><span class="num">02</span><span class="label" data-ar="العرض: مكثّف">Width: Condensed</span></div>
+      <div class="type-features__item"><span class="num">03</span><span class="label" data-ar="الأطراف: مربّعة">Terminals: Squared</span></div>
+      <div class="type-features__item"><span class="num">04</span><span class="label" data-ar="للطباعة والويب">Use: Print &amp; Web</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TYPE SPECIMENS DESK ================= -->
+<section class="specimens">
+  <div class="section-head">
+    <div class="section-head__num">04.1</div>
+    <h2 class="section-head__title" data-ar="طاولة <em>النماذج</em>.">The specimen <em>desk</em>.</h2>
+    <p class="section-head__sub" data-ar="اسحب البطاقات وقرّبها لتفقّد الخط عن قرب.">Drag the cards, pinch to zoom — get close to the letterforms.</p>
+  </div>
+
+  <div class="specimens__desk" id="specimens-desk">
+    <span class="specimens__hint">DRAG <span>·</span> PINCH TO ZOOM</span>
+
+    <div class="specimen" style="top: 8%; left: 6%;">
+      <div class="specimen__paper">
+        <div class="specimen__head"><span>RAUHBART DISPLAY</span><span>BOLD</span></div>
+        <div class="specimen__aa">A<em>a</em></div>
+        <div class="specimen__alphabet">ABCDEFGHIJKLM<br>NOPQRSTUVWXYZ</div>
+        <div class="specimen__footer"><span>01 / 03</span><span class="specimen__download">SPEC.PDF</span></div>
+      </div>
+    </div>
+
+    <div class="specimen" style="top: 18%; left: 38%;">
+      <div class="specimen__paper">
+        <div class="specimen__head"><span>RAUHBART TEXT</span><span>REGULAR</span></div>
+        <div class="specimen__aa">S<em>w</em></div>
+        <div class="specimen__alphabet">abcdefghijklm<br>nopqrstuvwxyz</div>
+        <div class="specimen__footer"><span>02 / 03</span><span class="specimen__download">SPEC.PDF</span></div>
+      </div>
+    </div>
+
+    <div class="specimen" style="top: 10%; left: 68%;">
+      <div class="specimen__paper">
+        <div class="specimen__head"><span>RAUHBART MONO</span><span>NUMERALS</span></div>
+        <div class="specimen__aa">1<em>2</em></div>
+        <div class="specimen__alphabet">0123456789</div>
+        <div class="specimen__footer"><span>03 / 03</span><span class="specimen__download">SPEC.PDF</span></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -2129,6 +2420,89 @@ body::before{ background:
       <h3 class="talk__title" data-ar="جديد، <em>كل موسم</em>.">Fresh, <em>every season</em>.</h3>
       <p class="talk__blurb" data-ar="الخزانة لا تشيخ. وصل حديث كل موسم عبر التيشيرتات والقمصان والهوديات والبناطيل.">The wardrobe never goes stale. New arrivals land each season across tees, shirts, hoodies and pants — for every moment.</p>
     </div>
+  </div>
+</section>
+
+<!-- ================= SOCIAL FEED ================= -->
+<!--
+  NOTE: These are placeholder tiles, not a live Instagram sync. A static HTML
+  file can't call Instagram's Graph API directly (it needs a server-side
+  access token). To make this a real live feed, either:
+   1) sign up for an embed widget (SnapWidget, Behold.so, LightWidget, Elfsight)
+      and swap this .feed__grid block for the script/iframe they give you, or
+   2) run a small backend that refreshes a JSON file from the Graph API and
+      have this page fetch() that JSON to fill in real photo URLs + links.
+  Until then, replace the six placeholder <img> tiles below with real photos
+  and each link's href with the real post URL.
+-->
+<section class="feed reveal" id="feed">
+  <div class="section-head">
+    <div class="section-head__num">06</div>
+    <h2 class="section-head__title" data-ar="على <em>إنستغرام</em>.">On <em>Instagram</em>.</h2>
+    <p class="section-head__sub" data-ar="آخر ما نشرناه — تابعونا لمزيد.">Straight from the feed — follow along for more.</p>
+  </div>
+
+  <div class="feed__featured">
+    <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DZCT7CeusQr/?utm_source=ig_embed" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:400px; min-width:280px; padding:0; width:calc(100% - 2px);">
+    </blockquote>
+  </div>
+  <p class="feed__featured-caption" data-ar="ريل حقيقي من @swag1.co">Real reel from @swag1.co</p>
+
+  <div class="feed__grid" id="feedGrid">
+    <a class="feed__post" href="https://instagram.com/swag" target="_blank" rel="noopener">
+      <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20500%20500%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%232A2016%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%231A1712%22/%3E%3C/linearGradient%3E%3Cpattern%20id%3D%22p%22%20width%3D%2224%22%20height%3D%2224%22%20patternUnits%3D%22userSpaceOnUse%22%3E%3Cpath%20d%3D%22M0%2024%20L24%200%22%20stroke%3D%22%23C9A227%22%20stroke-width%3D%220.5%22%20opacity%3D%220.15%22/%3E%3C/pattern%3E%3C/defs%3E%3Crect%20width%3D%22500%22%20height%3D%22500%22%20fill%3D%22url%28%23g%29%22/%3E%3Crect%20width%3D%22500%22%20height%3D%22500%22%20fill%3D%22url%28%23p%29%22/%3E%3Ctext%20x%3D%22250%22%20y%3D%22255%22%20text-anchor%3D%22middle%22%20font-family%3D%22Georgia%2C%20serif%22%20font-style%3D%22italic%22%20font-size%3D%2234%22%20fill%3D%22%23F5F0E4%22%20opacity%3D%220.92%22%3ENew%20Drop%3C/text%3E%3Ctext%20x%3D%22250%22%20y%3D%22290%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%2211%22%20letter-spacing%3D%224%22%20fill%3D%22%23C9A227%22%20opacity%3D%220.85%22%3ESTREETWEAR%20%C2%B7%20SS26%3C/text%3E%3C/svg%3E" alt="New drop">
+      <div class="feed__overlay">
+        <span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-6.7-4.3-9.3-8.2C.8 9.7 1.8 6 5.1 4.8 7.3 4 9.6 4.8 11 6.6l1 1.3 1-1.3c1.4-1.8 3.7-2.6 5.9-1.8 3.3 1.2 4.3 4.9 2.4 8-2.6 3.9-9.3 8.2-9.3 8.2z"/></svg> 4.2k</span>
+        <span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v12H7l-3 3V4z"/></svg> 86</span>
+      </div>
+    </a>
+
+    <a class="feed__post" href="https://instagram.com/swag" target="_blank" rel="noopener">
+      <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20500%20500%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%233D2B1C%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%231A1712%22/%3E%3C/linearGradient%3E%3Cpattern%20id%3D%22p%22%20width%3D%2224%22%20height%3D%2224%22%20patternUnits%3D%22userSpaceOnUse%22%3E%3Cpath%20d%3D%22M0%2024%20L24%200%22%20stroke%3D%22%23C9A227%22%20stroke-width%3D%220.5%22%20opacity%3D%220.15%22/%3E%3C/pattern%3E%3C/defs%3E%3Crect%20width%3D%22500%22%20height%3D%22500%22%20fill%3D%22url%28%23g%29%22/%3E%3Crect%20width%3D%22500%22%20height%3D%22500%22%20fill%3D%22url%28%23p%29%22/%3E%3Ctext%20x%3D%22250%22%20y%3D%22255%22%20text-anchor%3D%22middle%22%20font-family%3D%22Georgia%2C%20serif%22%20font-style%3D%22italic%22%20font-size%3D%2234%22%20fill%3D%22%23F5F0E4%22%20opacity%3D%220.92%22%3EStudio%3C/text%3E%3Ctext%20x%3D%22250%22%20y%3D%22290%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%2211%22%20letter-spacing%3D%224%22%20fill%3D%22%23C9A227%22%20opacity%3D%220.85%22%3EBEHIND%20THE%20SEAMS%3C/text%3E%3C/svg%3E" alt="Studio">
+      <div class="feed__overlay">
+        <span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-6.7-4.3-9.3-8.2C.8 9.7 1.8 6 5.1 4.8 7.3 4 9.6 4.8 11 6.6l1 1.3 1-1.3c1.4-1.8 3.7-2.6 5.9-1.8 3.3 1.2 4.3 4.9 2.4 8-2.6 3.9-9.3 8.2-9.3 8.2z"/></svg> 2.8k</span>
+        <span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v12H7l-3 3V4z"/></svg> 41</span>
+      </div>
+    </a>
+
+    <a class="feed__post" href="https://instagram.com/swag" target="_blank" rel="noopener">
+      <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20500%20500%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%231A1712%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%232A2016%22/%3E%3C/linearGradient%3E%3Cpattern%20id%3D%22p%22%20width%3D%2224%22%20height%3D%2224%22%20patternUnits%3D%22userSpaceOnUse%22%3E%3Cpath%20d%3D%22M0%2024%20L24%200%22%20stroke%3D%22%23C9A227%22%20stroke-width%3D%220.5%22%20opacity%3D%220.15%22/%3E%3C/pattern%3E%3C/defs%3E%3Crect%20width%3D%22500%22%20height%3D%22500%22%20fill%3D%22url%28%23g%29%22/%3E%3Crect%20width%3D%22500%22%20height%3D%22500%22%20fill%3D%22url%28%23p%29%22/%3E%3Ctext%20x%3D%22250%22%20y%3D%22255%22%20text-anchor%3D%22middle%22%20font-family%3D%22Georgia%2C%20serif%22%20font-style%3D%22italic%22%20font-size%3D%2234%22%20fill%3D%22%23F5F0E4%22%20opacity%3D%220.92%22%3EJeddah%3C/text%3E%3Ctext%20x%3D%22250%22%20y%3D%22290%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%2211%22%20letter-spacing%3D%224%22%20fill%3D%22%23C9A227%22%20opacity%3D%220.85%22%3EFLAGSHIP%20STORE%3C/text%3E%3C/svg%3E" alt="Jeddah flagship">
+      <div class="feed__overlay">
+        <span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-6.7-4.3-9.3-8.2C.8 9.7 1.8 6 5.1 4.8 7.3 4 9.6 4.8 11 6.6l1 1.3 1-1.3c1.4-1.8 3.7-2.6 5.9-1.8 3.3 1.2 4.3 4.9 2.4 8-2.6 3.9-9.3 8.2-9.3 8.2z"/></svg> 5.6k</span>
+        <span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v12H7l-3 3V4z"/></svg> 112</span>
+      </div>
+    </a>
+
+    <a class="feed__post" href="https://instagram.com/swag" target="_blank" rel="noopener">
+      <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20500%20500%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%232A2016%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%234A3526%22/%3E%3C/linearGradient%3E%3Cpattern%20id%3D%22p%22%20width%3D%2224%22%20height%3D%2224%22%20patternUnits%3D%22userSpaceOnUse%22%3E%3Cpath%20d%3D%22M0%2024%20L24%200%22%20stroke%3D%22%23C9A227%22%20stroke-width%3D%220.5%22%20opacity%3D%220.15%22/%3E%3C/pattern%3E%3C/defs%3E%3Crect%20width%3D%22500%22%20height%3D%22500%22%20fill%3D%22url%28%23g%29%22/%3E%3Crect%20width%3D%22500%22%20height%3D%22500%22%20fill%3D%22url%28%23p%29%22/%3E%3Ctext%20x%3D%22250%22%20y%3D%22255%22%20text-anchor%3D%22middle%22%20font-family%3D%22Georgia%2C%20serif%22%20font-style%3D%22italic%22%20font-size%3D%2234%22%20fill%3D%22%23F5F0E4%22%20opacity%3D%220.92%22%3EFit%20Check%3C/text%3E%3Ctext%20x%3D%22250%22%20y%3D%22290%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%2211%22%20letter-spacing%3D%224%22%20fill%3D%22%23C9A227%22%20opacity%3D%220.85%22%3ETAG%20%40SWAG%3C/text%3E%3C/svg%3E" alt="Fit check">
+      <div class="feed__overlay">
+        <span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-6.7-4.3-9.3-8.2C.8 9.7 1.8 6 5.1 4.8 7.3 4 9.6 4.8 11 6.6l1 1.3 1-1.3c1.4-1.8 3.7-2.6 5.9-1.8 3.3 1.2 4.3 4.9 2.4 8-2.6 3.9-9.3 8.2-9.3 8.2z"/></svg> 3.1k</span>
+        <span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v12H7l-3 3V4z"/></svg> 58</span>
+      </div>
+    </a>
+
+    <a class="feed__post" href="https://instagram.com/swag" target="_blank" rel="noopener">
+      <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20500%20500%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%231A1712%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%233D2B1C%22/%3E%3C/linearGradient%3E%3Cpattern%20id%3D%22p%22%20width%3D%2224%22%20height%3D%2224%22%20patternUnits%3D%22userSpaceOnUse%22%3E%3Cpath%20d%3D%22M0%2024%20L24%200%22%20stroke%3D%22%23C9A227%22%20stroke-width%3D%220.5%22%20opacity%3D%220.15%22/%3E%3C/pattern%3E%3C/defs%3E%3Crect%20width%3D%22500%22%20height%3D%22500%22%20fill%3D%22url%28%23g%29%22/%3E%3Crect%20width%3D%22500%22%20height%3D%22500%22%20fill%3D%22url%28%23p%29%22/%3E%3Ctext%20x%3D%22250%22%20y%3D%22255%22%20text-anchor%3D%22middle%22%20font-family%3D%22Georgia%2C%20serif%22%20font-style%3D%22italic%22%20font-size%3D%2234%22%20fill%3D%22%23F5F0E4%22%20opacity%3D%220.92%22%3EFabric%3C/text%3E%3Ctext%20x%3D%22250%22%20y%3D%22290%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%2211%22%20letter-spacing%3D%224%22%20fill%3D%22%23C9A227%22%20opacity%3D%220.85%22%3EHEAVYWEIGHT%20COTTON%3C/text%3E%3C/svg%3E" alt="Fabric close-up">
+      <div class="feed__overlay">
+        <span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-6.7-4.3-9.3-8.2C.8 9.7 1.8 6 5.1 4.8 7.3 4 9.6 4.8 11 6.6l1 1.3 1-1.3c1.4-1.8 3.7-2.6 5.9-1.8 3.3 1.2 4.3 4.9 2.4 8-2.6 3.9-9.3 8.2-9.3 8.2z"/></svg> 2.3k</span>
+        <span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v12H7l-3 3V4z"/></svg> 34</span>
+      </div>
+    </a>
+
+    <a class="feed__post" href="https://instagram.com/swag" target="_blank" rel="noopener">
+      <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20500%20500%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%233D2B1C%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%232A2016%22/%3E%3C/linearGradient%3E%3Cpattern%20id%3D%22p%22%20width%3D%2224%22%20height%3D%2224%22%20patternUnits%3D%22userSpaceOnUse%22%3E%3Cpath%20d%3D%22M0%2024%20L24%200%22%20stroke%3D%22%23C9A227%22%20stroke-width%3D%220.5%22%20opacity%3D%220.15%22/%3E%3C/pattern%3E%3C/defs%3E%3Crect%20width%3D%22500%22%20height%3D%22500%22%20fill%3D%22url%28%23g%29%22/%3E%3Crect%20width%3D%22500%22%20height%3D%22500%22%20fill%3D%22url%28%23p%29%22/%3E%3Ctext%20x%3D%22250%22%20y%3D%22255%22%20text-anchor%3D%22middle%22%20font-family%3D%22Georgia%2C%20serif%22%20font-style%3D%22italic%22%20font-size%3D%2234%22%20fill%3D%22%23F5F0E4%22%20opacity%3D%220.92%22%3ERiyadh%3C/text%3E%3Ctext%20x%3D%22250%22%20y%3D%22290%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%2211%22%20letter-spacing%3D%224%22%20fill%3D%22%23C9A227%22%20opacity%3D%220.85%22%3ENOW%20OPEN%3C/text%3E%3C/svg%3E" alt="Riyadh store">
+      <div class="feed__overlay">
+        <span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-6.7-4.3-9.3-8.2C.8 9.7 1.8 6 5.1 4.8 7.3 4 9.6 4.8 11 6.6l1 1.3 1-1.3c1.4-1.8 3.7-2.6 5.9-1.8 3.3 1.2 4.3 4.9 2.4 8-2.6 3.9-9.3 8.2-9.3 8.2z"/></svg> 6.4k</span>
+        <span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v12H7l-3 3V4z"/></svg> 203</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="feed__cta">
+    <a class="feed__follow" href="https://instagram.com/swag" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+      <span data-ar="تابعونا @swag">Follow @swag</span>
+    </a>
   </div>
 </section>
 
@@ -2579,5 +2953,6 @@ document.querySelectorAll('.index__entry').forEach((entry, i) => {
   if (btn) btn.addEventListener('click', () => apply(lang === 'en' ? 'ar' : 'en'));
 })();
 </script>
+<script async src="//www.instagram.com/embed.js"></script>
 </body>
 </html>
