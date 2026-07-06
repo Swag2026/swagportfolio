@@ -53,6 +53,36 @@ a{text-decoration:none;color:inherit}
   cursor:pointer;transition:opacity .2s}
 .btn-ncta:hover{opacity:.8}
 
+/* ─── MOBILE HAMBURGER ─── */
+.btn-burger{display:none;flex-direction:column;justify-content:center;gap:5px;
+  width:34px;height:34px;border:none;background:none;cursor:pointer;
+  padding:0;flex-shrink:0}
+.btn-burger span{display:block;width:22px;height:1.5px;background:var(--ink);
+  transition:transform .3s,opacity .3s;margin:0 auto}
+.btn-burger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.btn-burger.open span:nth-child(2){opacity:0}
+.btn-burger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+.mnav-ov{position:fixed;inset:0;z-index:280;background:rgba(20,20,18,.4);
+  backdrop-filter:blur(2px);opacity:0;pointer-events:none;
+  transition:opacity .3s}
+.mnav-ov.open{opacity:1;pointer-events:auto}
+
+.mnav{position:fixed;top:62px;right:0;bottom:0;z-index:290;width:78%;max-width:320px;
+  background:var(--white);box-shadow:-8px 0 30px rgba(0,0,0,.1);
+  transform:translateX(100%);transition:transform .35s ease;
+  display:flex;flex-direction:column;padding:12px 0;overflow-y:auto}
+html[dir="ltr"] .mnav{right:auto;left:0;transform:translateX(-100%)}
+.mnav.open{transform:translateX(0)}
+.mnav a{display:block;padding:18px 28px;font-size:16px;font-weight:500;
+  color:var(--ink);border-bottom:1px solid var(--i06)}
+.mnav a:active{background:var(--c1)}
+.mnav-cta{margin:16px 28px 8px}
+.mnav-cta button{width:100%;font-family:'Tajawal',sans-serif;font-size:14px;
+  font-weight:500;background:var(--ink);color:var(--white);padding:13px;
+  border:none;cursor:pointer}
+body.mnav-locked{overflow:hidden}
+
 /* ─── HERO ─── */
 .hero{min-height:100vh;padding-top:62px;display:grid;grid-template-columns:1fr 1fr}
 
@@ -65,8 +95,6 @@ a{text-decoration:none;color:inherit}
 .h-title{margin-bottom:28px}
 /* Hero title — clean single weight, no italic mix */
 .ht-a{font-family:'Tajawal',sans-serif;font-size:clamp(40px,5vw,68px);
-  font-weight:700;line-height:1.1;color:var(--ink);display:block;letter-spacing:-.5px}
-.ht-b{font-family:'Tajawal',sans-serif;font-size:clamp(40px,5vw,68px);
   font-weight:700;line-height:1.1;color:var(--ink);display:block;letter-spacing:-.5px}
 .ht-b{font-family:'Tajawal',sans-serif;font-size:clamp(40px,5vw,68px);
   font-weight:300;line-height:1.1;color:var(--i60);display:block;letter-spacing:-.5px}
@@ -118,10 +146,6 @@ a{text-decoration:none;color:inherit}
 /* ─── SECTION COMMON ─── */
 .sec{padding:104px 0}
 .sw{max-width:1320px;margin:0 auto;padding:0 44px}
-.stag{display:inline-flex;align-items:center;gap:10px;
-  font-family:'Outfit',sans-serif;font-size:9.5px;letter-spacing:4px;
-  text-transform:uppercase;color:var(--i40);margin-bottom:18px}
-.stag::before{content:'';width:18px;height:1px;background:var(--i30);flex-shrink:0}
 .sh{font-family:'Tajawal',sans-serif;font-size:clamp(28px,3vw,44px);
   font-weight:700;line-height:1.15;color:var(--ink);margin-bottom:5px}
 .sh-en{font-family:'Outfit',sans-serif;font-size:clamp(10px,1vw,12px);font-weight:300;
@@ -404,6 +428,7 @@ footer{background:#0D0D0C;border-top:1px solid rgba(255,255,255,.04)}
   .sw,.nw,.phead{padding-left:28px;padding-right:28px}
   .nlinks{display:none}
   .nact{gap:8px}
+  .btn-burger{display:flex}
 
   .hero{grid-template-columns:1fr;min-height:auto}
   .hl{padding:48px 28px 40px;order:1}
@@ -586,7 +611,23 @@ body.modal-locked{overflow:hidden}
     <div class="nact">
       <button class="btn-lang">EN</button>
       <button class="btn-ncta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})" data-ar="تواصل معنا" data-en="Contact Us">تواصل معنا</button>
+      <button class="btn-burger" id="btnBurger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
+  </div>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="mnav-ov" id="mnavOv"></div>
+<nav class="mnav" id="mnav">
+  <a href="#about" data-ar="من نحن" data-en="About Us">من نحن</a>
+  <a href="#products" data-ar="المنتجات" data-en="Products">المنتجات</a>
+  <a href="#quality" data-ar="الجودة" data-en="Quality">الجودة</a>
+  <a href="#branches" data-ar="فروعنا" data-en="Branches">فروعنا</a>
+  <a href="#contact" data-ar="تواصل" data-en="Contact">تواصل</a>
+  <div class="mnav-cta">
+    <button onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})" data-ar="تواصل معنا" data-en="Contact Us">تواصل معنا</button>
   </div>
 </nav>
 
@@ -1299,7 +1340,6 @@ const ELEMENT_MAP = [
   ['pin-riyadh',   ()=>document.getElementById('pin-riyadh')],
   ['pin-dammam',   ()=>document.getElementById('pin-dammam')],
   ['f-privacy',    ()=>document.getElementById('link-privacy')],
-  ['f-privacy',    ()=>document.getElementById('legalTitle')],
   ['f-terms',      ()=>document.getElementById('link-terms')],
 ];
 
@@ -1338,12 +1378,48 @@ function switchLang(lang) {
   const ticker = document.querySelector('.tick-tr');
   if(ticker) ticker.style.direction = isEn ? 'ltr' : 'rtl';
 
+  // Mobile nav links + CTA (use data-ar/data-en attrs directly)
+  document.querySelectorAll('.mnav a[data-ar], .mnav-cta button[data-ar]').forEach(el => {
+    el.textContent = isEn ? el.getAttribute('data-en') : el.getAttribute('data-ar');
+  });
+
 }
 
 // Attach to button
 document.querySelector('.btn-lang').addEventListener('click', () => {
   switchLang(currentLang === 'ar' ? 'en' : 'ar');
 });
+
+/* ══════════════════════════════════
+   MOBILE HAMBURGER MENU
+══════════════════════════════════ */
+(function(){
+  const burger = document.getElementById('btnBurger');
+  const mnav = document.getElementById('mnav');
+  const mnavOv = document.getElementById('mnavOv');
+
+  function openMenu(){
+    burger.classList.add('open');
+    mnav.classList.add('open');
+    mnavOv.classList.add('open');
+    burger.setAttribute('aria-expanded','true');
+    document.body.classList.add('mnav-locked');
+  }
+  function closeMenu(){
+    burger.classList.remove('open');
+    mnav.classList.remove('open');
+    mnavOv.classList.remove('open');
+    burger.setAttribute('aria-expanded','false');
+    document.body.classList.remove('mnav-locked');
+  }
+  burger.addEventListener('click', () => {
+    mnav.classList.contains('open') ? closeMenu() : openMenu();
+  });
+  mnavOv.addEventListener('click', closeMenu);
+  mnav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+  mnav.querySelector('.mnav-cta button').addEventListener('click', closeMenu);
+  document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeMenu(); });
+})();
 
 /* ══════════════════════════════════
    LEGAL MODAL (Privacy Policy)
